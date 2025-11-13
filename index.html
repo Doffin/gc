@@ -32,13 +32,12 @@
 
     </div>
     <button id="install_button">Install</button>
-
+    <script src="app.js"></script>
    <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js', { scope: './' });            
         }
     </script>
-    <script src="app.js"></script>
     <script>
         w3.includeHTML();
         let ws = null;
@@ -189,3 +188,4 @@
 </body>
 
 </html>
+
