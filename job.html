@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #111;
+}
+
+.vk-asphalt,.vk-hover-asphalt:hover{color:#fff!important;background-color:#222!important}
+.vk-asphalt-light,.vk-hover-asphalt-light:hover{color:#fff!important;background-color:#444!important}
+.vk-panel{padding:0.01em 6px}.vk-panel{margin-top:6px;margin-bottom:6px}
+.vk-border{border:1px solid #333!important}
+</style>
+</head>
+<script>
+function toggleVisibility(id) {
+  var x = document.getElementById(id);
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+</script>
+<body>
+    <div class="w3-container">
+        <div class="w3-bar vk-border w3-round vk-asphalt">
+            <div class="w3-bar-item"><h2>Platetest</h2></div>
+            <div class="w3-bar-item w3-right">
+              <div class="w3-dropdown-hover">
+              <button class="w3-button">Language</button>
+                <div class="w3-dropdown-content w3-bar-block vk-asphalt-light w3-card-4">
+                  <a href="#" class="w3-bar-item w3-button">Norsk</a>
+                  <a href="#" class="w3-bar-item w3-button">Polski</a>
+                  <a href="#" class="w3-bar-item w3-button">English</a>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="vk-panel vk-border w3-round vk-asphalt">
+            <div class="w3-display-container" style="height:60px;">
+              <div class="w3-display-left">Settings</div> 
+              <button class="w3-button w3-circle w3-display-right vk-asphalt-light w3-right" onclick="document.location='settings.html'"><i class="fa fa-angle-right"></i></button> 
+            </div>
+        </div>
+        <div class="vk-panel vk-border w3-round vk-asphalt">
+            <div class="w3-display-container" style="height:60px;">
+              <div class="w3-display-left">En vanlig test</div>  
+              <button onclick="toggleVisibility('acc1')" class="w3-button w3-circle w3-display-right vk-asphalt-light w3-right"><i class="fa fa-angle-down"></i></button> 
+            </div>
+            <div id="acc1" class="vk-panel w3-hide">
+                <p>Detaljer om tema vises her..</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GroundCheck</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0"></script>
+
+</head>
+
+<body class="w3-container">
+    <div class="w3-row">
+        <div class="w3-col l4 w3-left">
+            <p class="w3-panel" w3-include-html="customers.html"></p>
+        </div>
+        <div class="w3-col l8 w3-center">
+            <div class="w3-panel w3-card-4">
+                <canvas id="myChart" style="width:80%;max-width:700px"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="w3-panel w3-light-grey">
+
+
+    </div>
+
+    <script>
+        w3.includeHTML();
+        let ws = null;
+        window.onload = function () {
+            initWebSocket();
+        };
+
+        function showMessage(message) {
+            const messages = document.getElementById('messages');
+            if (!messages) return;
+            messages.innerHTML = `${message}`;
+        }
+
+        function initWebSocket() {
+            if (ws) {
+                showMessage('WebSocket is already initialized.');
+                return;
+            }
+            ws = new WebSocket(`ws://localhost:8080`);
+            ws.onerror = function () {
+                showMessage('WebSocket error');
+            };
+            ws.onopen = function () {
+                showMessage('WebSocket connection established');
+            };
+            ws.onclose = function () {
+                showMessage('WebSocket connection closed');
+                ws = null;
+            };
+            ws.sendMessage = function (message) {
+                if (ws) {
+                    ws.send(message);
+                    setTimeout(function(){
+                        showMessage("...");
+                     },2000);
+                } else {
+                    showMessage('WebSocket is not connected.');
+                }
+            };
+            ws.onmessage = function (event) {
+                try {
+                    const msg = JSON.parse(event.data);
+                    if (msg.tid) {
+                        const tidElem = document.getElementById('live_tid');
+                        if (tidElem) tidElem.innerHTML = msg.tid;
+                    }
+                    if (msg.last) {
+                        const lastElem = document.getElementById('live_last');
+                        if (lastElem) lastElem.innerHTML = msg.last;
+                    }
+                    if (msg.setning) {
+                        const setningElem = document.getElementById('live_setning');
+                        if (setningElem) setningElem.innerHTML = msg.setning;
+                    }
+                    if (msg.type && msg.type === 'ptm_save') {
+                        updateTable();
+                    }
+                    return;
+                } catch (error) {
+                    showMessage(event.data);
+                    return;
+                }
+            };
+        }
+        function sendRequest(msg) {
+            if (ws) {
+                ws.sendMessage(msg);
+            } else {
+                showMessage('WebSocket is not connected.');
+            }
+        }
+
+        function updateTable() {
+            let lastSuffix = '10';
+            // Shift existing rows up
+            for (let i = 1; i < 10; i++) {
+                let toSuffix = i < 10 ? `0${i}` : `${i}`;
+                let fromSuffix = i < 9 ? `0${i + 1}` : `${i + 1}`;
+                lastSuffix = fromSuffix;
+                document.getElementById(`tid_` + toSuffix).innerHTML = document.getElementById(`tid_` + fromSuffix).innerHTML;
+                document.getElementById(`last_` + toSuffix).innerHTML = document.getElementById(`last_` + fromSuffix).innerHTML;
+                document.getElementById(`setning_` + toSuffix).innerHTML = document.getElementById(`setning_` + fromSuffix).innerHTML;
+            }
+            document.getElementById('tid_' + lastSuffix).innerHTML = document.getElementById(`live_tid`).innerHTML;
+            document.getElementById('last_' + lastSuffix).innerHTML = document.getElementById(`live_last`).innerHTML;
+            document.getElementById('setning_' + lastSuffix).innerHTML = document.getElementById(`live_setning`).innerHTML;
+        }
+
+        const xValues = [0, 100, 200, 300, 400, 500, 600];
+
+        const ctx = document.getElementById('myChart');
+
+        let chart=new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    data: [0, -1.5, -2.7, -3.0, -4.6],
+                    label: "Belasning 1",
+                    borderColor: "red",
+                    pointRadius: 2,
+                    tension: 0.4,
+                }, {
+                    data: [-2.0, -2.5, -3.0, -3.4, -4.6],
+                    label: "Avlasning",
+                    borderColor: "blue",
+                    pointRadius: 2,
+                    tension: 0.4,
+                }, {
+                    data: [-2.0, -2.8, -3.5, -4.0, -5.6],
+                    label: "Belasning 2",
+                    borderColor: "green",
+                    pointRadius: 2,
+                    tension: 0.4,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Last [kN/m2]',
+                        }
+                    },
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Setning [mm]',
+                        }
+                    }
+                },
+                plugins:{
+                    title: {
+                        display: true,
+                        text: 'Setning som funksjon av belasning',
+                    },
+                    legend : { position: 'right'}
+                }
+                
+            }
+        }
+        );
+    </script>
+
+</body>
+
+</html>
