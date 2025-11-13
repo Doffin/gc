@@ -1,0 +1,19 @@
+{
+    "lang": "en-us",
+    "name": "GoundCheck App",
+    "short_name": "GroundCheck",
+    "description": "En demonstrasjon av Benkelmannsarm",
+    "start_url": "index.html",
+    "background_color": "#2f3d58",
+    "theme_color": "#2E2F37",
+    "orientation": "any",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "icon.png",
+            "sizes": "192x192"
+        }
+    ],
+    "prefer_related_applications": false
+}
+
