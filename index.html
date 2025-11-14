@@ -31,19 +31,28 @@
     <div class="w3-panel w3-light-grey">
 
     </div>
+    <input type="button" id="clear-cache" value="Refresh" onclick="clearCache()" />
     <button id="install_button" hidden>Install</button>
-    <script src="app.js"></script>
+
    <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js', { scope: './' });            
         }
     </script>
+    <script src="app.js"></script>
     <script>
         w3.includeHTML();
         let ws = null;
         window.onload = function () {
             initWebSocket();
         };
+
+        const key = 'vk_test_v1';
+        function clearCache() {
+            caches.delete(key);
+            location.reload();
+        }
+
 
         function showMessage(message) {
             const messages = document.getElementById('messages');
@@ -188,5 +197,3 @@
 </body>
 
 </html>
-
-

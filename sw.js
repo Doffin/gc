@@ -11,7 +11,7 @@ self.addEventListener('install', event => {
       './bt.html',
       './manifest.json',
       './styles.css',
-      './icon_192.png',
+      './icon.png',
       './w3.css'
       ]);
   })());
