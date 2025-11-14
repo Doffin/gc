@@ -12,7 +12,11 @@ self.addEventListener('install', event => {
       './manifest.json',
       './styles.css',
       './icon.png',
-      './w3.css'
+      './w3.css',
+      './sw.js',
+      './w3.js',
+      './chart.umd.min.js'
+      
       ]);
   })());
 });
