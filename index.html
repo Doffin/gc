@@ -155,60 +155,43 @@
         const xValues = [0, 100, 200, 300, 400, 500, 600];
 
         const ctx = document.getElementById('myChart');
-
-        let chart=new Chart(ctx, {
-            type: "line",
+        let chartConfig = {
+            type: 'line',
             data: {
                 labels: xValues,
                 datasets: [{
-                    data: [0, -1.5, -2.7, -3.0, -4.6],
-                    label: "Belasning 1",
-                    borderColor: "red",
-                    pointRadius: 2,
-                    tension: 0.4,
-                }, {
-                    data: [-2.0, -2.5, -3.0, -3.4, -4.6],
-                    label: "Avlasning",
-                    borderColor: "blue",
-                    pointRadius: 2,
-                    tension: 0.4,
-                }, {
-                    data: [-2.0, -2.8, -3.5, -4.0, -5.6],
-                    label: "Belasning 2",
-                    borderColor: "green",
-                    pointRadius: 2,
-                    tension: 0.4,
+                    label: 'Displacement as function of load',
+                    borderColor: 'blue',
+                    data: [0, 10, 25, 40, 60, 85, 120],
+                    fill: false,
+                    tension: 0.1
                 }]
             },
             options: {
                 responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Displacement as function of load'
+                    }
+                },
                 scales: {
                     x: {
-                        display: true,
                         title: {
                             display: true,
-                            text: '{xAxisTitle}',
+                            text: '{xAxisTitle}'
                         }
                     },
                     y: {
-                        display: true,
                         title: {
                             display: true,
-                            text: '{yAxisTitle}',
+                            text: '{yAxisTitle}'
                         }
                     }
-                },
-                plugins:{
-                    title: {
-                        display: true,
-                        text: '{graphTitle}',
-                    },
-                    legend : { position: 'right'}
                 }
-                
             }
-        }
-        );
+        };
+        let chart=new Chart(ctx, chartConfig);
     </script>
 
 </body>

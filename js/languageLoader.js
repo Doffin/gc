@@ -27,6 +27,11 @@ function updateText() {
             el.textContent = interpolate(value, currentVariables);
         }
     });
+    document.getElementById("chartTitle").textContent = interpolate(currentLanguageData.content.graphTitle, currentVariables);
+    chart.options.plugins.title.text = interpolate(currentLanguageData.content.graphTitle, currentVariables);
+    chart.options.scales.x.title.text = interpolate(currentLanguageData.content.xAxisTitle, currentVariables);
+    chart.options.scales.y.title.text = interpolate(currentLanguageData.content.yAxisTitle, currentVariables);
+    chart.update();
 }
 
 // Laster språkfil
