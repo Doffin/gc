@@ -31,7 +31,7 @@ function updateText() {
 
 // Laster språkfil
 async function loadLanguage(lang) {
-    const response = await fetch(`../lang/${lang}.json`);
+    const response = await fetch(`lang/${lang}.json`);
     currentLanguageData = await response.json();
     updateText();
 }
