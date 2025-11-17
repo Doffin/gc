@@ -27,6 +27,7 @@ function updateText() {
             el.textContent = interpolate(value, currentVariables);
         }
     });
+    updateChartText(chart);
 /*    
     chart.options.plugins.title.textContent
     chart.options.plugins.title.text = interpolate("graphTitle", currentVariables);
@@ -34,6 +35,11 @@ function updateText() {
     chart.options.scales.y.title.text = interpolate("yAxisTitle", currentVariables);
     chart.update();
     */
+}
+
+function updateChartText(chart) {
+    chart.options.plugins.title.text = resolveKey(currentLanguageData, "content.graphTitle");
+    chart.update();
 }
 
 // Laster språkfil
