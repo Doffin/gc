@@ -27,7 +27,6 @@ function updateText() {
             el.textContent = interpolate(value, currentVariables);
         }
     });
-    document.getElementById("chartTitle").textContent = interpolate("graphTitle", currentVariables);
     chart.options.plugins.title.text = interpolate("graphTitle", currentVariables);
     chart.options.scales.x.title.text = interpolate("xAxisTitle", currentVariables);
     chart.options.scales.y.title.text = interpolate("yAxisTitle", currentVariables);
