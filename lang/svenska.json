@@ -6,6 +6,10 @@
     },
     "content": {
         "title": "Välkommen, {name} !",
-        "body": "Detta är en enkel HTML5-sida med språkval baserat på JSON."
+        "body": "Detta är en enkel HTML5-sida med språkval baserat på JSON.",
+        "graphTitle": "Displacement as function of load",
+        "xAxisTitle": "Load [kN/m2]",
+        "yAxisTitle": "Displacement [mm]"
+
     }
 }

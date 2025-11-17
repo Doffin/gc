@@ -6,6 +6,10 @@
     },
     "content": {
         "title": "Powitanie, {name}!",
-        "body": "To prosta strona HTML5 z wyborem języka na podstawie JSON."
+        "body": "To prosta strona HTML5 z wyborem języka na podstawie JSON.",
+        "graphTitle": "Displacement as function of load",
+        "xAxisTitle": "Load [kN/m2]",
+        "yAxisTitle": "Displacement [mm]"
+
     }
 }

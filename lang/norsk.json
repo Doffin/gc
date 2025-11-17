@@ -6,6 +6,10 @@
     },
     "content": {
         "title": "Velkommen!",
-        "body": "Dette er en enkel HTML5-side med språkvalg basert på JSON."
+        "body": "Dette er en enkel HTML5-side med språkvalg basert på JSON.",
+        "graphTitle": "Forskyvning som funksjon av last",
+        "xAxisTitle": "Last [kN/m2]",
+        "yAxisTitle": "Forskyvning [mm]"
+
     }
 }
