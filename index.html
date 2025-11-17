@@ -14,11 +14,18 @@
     <script src="chart.umd.min.js"></script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
+    <script defer src="./js/languageLoader.js"></script>
 </head>
 
 <body class="w3-container">
-    <p id="versionNr">Version 1.0.7</p>
+    <h1 data-i18n="content.title"></h1>
+    <p data-i18n="versionNr">Version 1.0.7</p>
+    <select id="language-select">
+        <option value="norsk">Norsk</option>
+        <option value="svenska">Svenska</option>
+        <option value="english">English</option>
+    </select>
+
     <div class="w3-row">
         <div class="w3-col l4 w3-left">
             <p class="w3-panel" w3-include-html="customers.html"></p>
