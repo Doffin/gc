@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <title>Leaflet test stedsnavn</title>
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+    .info-box {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: white;
+      padding: 10px 14px;
+      border-radius: 6px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+<div class="info-box">
+  <strong>Leaflet stedsnavn-demo</strong><br>
+    Punkt: <code>58.724722, 9.23</code>
+</div>
+
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+<script>
+// START Demo ----------------------------------------------
+
+// Punkt du ønsket:
+const latitude = 58.724722;
+const longitude = 9.23;
+ 
+// Kartverket punkt-søk (GeoJSON)
+const API_URL =
+  `https://ws.geonorge.no/stedsnavn/v1/punkt?nord=${latitude}` +
+  `&aust=${longitude}` +
+  `&radius=500&treffPerSide=20&utkoordsys=4326&outputformat=geojson`;
+
+// Haversine: avstand i meter
+function haversine(lat1, lon1, lat2, lon2) {
+  const R = 6371000;
+  const toRad = deg => deg * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+    Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+// Opprett kart
+const map = L.map('map').setView([latitude, longitude], 16);
+
+// Basiskart
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; OpenStreetMap'
+}).addTo(map);
+
+// Marker for punktet
+const userMarker = L.marker([latitude, longitude]).addTo(map);
+
+// Tegn radius (500 m)
+const radiusCircle = L.circle([latitude, longitude], {
+  radius: 500,
+  color: 'yellow',
+  fillOpacity: 0.05
+}).addTo(map);
+
+// Hent stedsnavn
+fetch(API_URL)
+  .then(res => res.json())
+  .then(data => {
+    if (!data.features || data.features.length === 0) {
+      alert('Ingen stedsnavn funnet innenfor radius.');
+      return;
+    }
+
+    // Finn nærmeste
+    let nearest = null;
+    let minDist = Infinity;
+
+    data.features.forEach(f => {
+      const [lon, lat] = f.geometry.coordinates;
+      const dist = haversine(latitude, longitude, lat, lon);
+      if (dist < minDist) {
+        minDist = dist;
+        nearest = f;
+      }
+    });
+
+    if (!nearest) {
+      alert("Fant ingen nærmeste stedsnavn.");
+      return;
+    }
+
+    const props = nearest.properties;
+    const [lon, lat] = nearest.geometry.coordinates;
+
+    // Marker for stedsnavn
+    L.marker([lat, lon], { color: "green" })
+      .addTo(map)
+      .bindPopup(
+        `<strong>${props.stedsnavn || props.skrivemåte}</strong><br>` +
+        `Type: ${props.navneobjekttype}<br>` +
+        `Kommune: ${props.kommunenavn}<br>` +
+        `Avstand: ${minDist.toFixed(1)} meter`
+      )
+      .openPopup();
+
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Feil ved henting av stedsnavn.");
+  });
+
+// END Demo --------------------------------------------------
+</script>
+
+</body>
+</html>

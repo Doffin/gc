@@ -1,0 +1,11 @@
+{
+    "menu": {
+        "home": "Hem",
+        "about": "Om oss",
+        "contact": "Kontakt"
+    },
+    "content": {
+        "title": "Välkommen, {name} !",
+        "body": "Detta är en enkel HTML5-sida med språkval baserat på JSON."
+    }
+}
