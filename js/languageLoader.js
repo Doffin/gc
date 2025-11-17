@@ -39,6 +39,8 @@ function updateText() {
 
 function updateChartText(chart) {
     chart.options.plugins.title.text = resolveKey(currentLanguageData, "content.graphTitle");
+    chart.options.scales.x.title.text = resolveKey(currentLanguageData, "content.xAxisTitle");
+    chart.options.scales.y.title.text = resolveKey(currentLanguageData, "content.yAxisTitle");
     chart.update();
 }
 
