@@ -18,7 +18,7 @@
 </head>
 
 <body class="w3-container">
-    <p id="versionNr">Version 1.0.11</p>
+    <p id="versionNr">Version 1.0.12</p>
     <select id="language-select">
         <option value="norsk">Norsk</option>
         <option value="svenska">Svenska</option>
@@ -155,7 +155,7 @@
         const xValues = [0, 100, 200, 300, 400, 500, 600];
 
         const ctx = document.getElementById('myChart');
-        let chartConfig = {
+        let chart=new Chart(ctx, {
             type: 'line',
             data: {
                 labels: xValues,
@@ -190,8 +190,7 @@
                     }
                 }
             }
-        };
-        let chart=new Chart(ctx, chartConfig);
+        });
     </script>
 
 </body>
