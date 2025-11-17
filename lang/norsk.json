@@ -5,7 +5,7 @@
         "contact": "Kontakt"
     },
     "content": {
-        "title": "Velkommen, {name}!",
+        "title": "Velkommen!",
         "body": "Dette er en enkel HTML5-side med språkvalg basert på JSON."
     }
 }
