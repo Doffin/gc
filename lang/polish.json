@@ -1,0 +1,11 @@
+{
+    "menu": {
+        "home": "Home",
+        "about": "About",
+        "contact": "Contact"
+    },
+    "content": {
+        "title": "Powitanie, {name}!",
+        "body": "To prosta strona HTML5 z wyborem języka na podstawie JSON."
+    }
+}
