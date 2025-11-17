@@ -155,7 +155,7 @@
         const xValues = [0, 100, 200, 300, 400, 500, 600];
 
         const ctx = document.getElementById('myChart');
-        let chartConfig = {
+        const chartConfig = {
             type: 'line',
             data: {
                 labels: xValues,
@@ -179,13 +179,13 @@
                     x: {
                         title: {
                             display: true,
-                            text: '{xAxisTitle}'
+                            text: 'Load [kN/m2]'
                         }
                     },
                     y: {
                         title: {
                             display: true,
-                            text: '{yAxisTitle}'
+                            text: 'Displacement [mm]'
                         }
                     }
                 }
