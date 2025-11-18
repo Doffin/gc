@@ -13,6 +13,8 @@
         "timeLabel": "Time [hh:mm:ss]",
         "loadLabel": "Load [kN/m2]",
         "displacementLabel":"Displacement [mm]"
-
-    }
+    },
+    "livesensor": {
+        "title": "Live Sensor Data"
+    }   
 }

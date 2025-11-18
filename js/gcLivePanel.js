@@ -42,7 +42,7 @@ class gcLivePanel extends HTMLElement {
       </style>
 
       <div class="panel">
-        <div class="title">Live Sensor Data</div>
+        <div class="title" data-i18n="livesensor.title">Live Sensor Data</div>
         <div id="sensorContainer"></div>
       </div>
     `;

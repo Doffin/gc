@@ -13,5 +13,9 @@
         "timeLabel": "Tid [hh:mm:ss]",
         "loadLabel": "Last [kN/m2]",
         "displacementLabel":"Setning [mm]"
-    }
+    },
+    "livesensor": {
+        "title": "Siste sensormålinger"
+    }   
+
 }
