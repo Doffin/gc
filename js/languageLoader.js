@@ -53,9 +53,6 @@ document.getElementById("updateVars").addEventListener("click", () => {
     updateText();
 });
 
-// Init
-loadLanguage("norsk");
-
 langSelect.addEventListener("change", () => {
     loadLanguage(langSelect.value);
 });
