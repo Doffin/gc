@@ -26,11 +26,11 @@
         <option value="dansk">Dansk</option>
         <option value="polish">Polski</option>
     </select>
-    <label>
-        Name: <input id="nameInput" value="" />
-    </label>
-    <br/>
+    <label>Name: <input id="nameInput" value="" /></label>
+    <input type="button" id="clear-cache" value="Refresh" onclick="clearCache()" />
+    <button id="install_button" hidden>Install</button>
     <button id="updateVars">Oppdater variabler</button>
+    <br/>
 
     <h1 data-i18n="content.title">TITTEL</h1>
     <p data-i18n="content.body">BODY</p>
@@ -49,8 +49,6 @@
     <div class="w3-panel w3-light-grey">
     
     </div>
-    <input type="button" id="clear-cache" value="Refresh" onclick="clearCache()" />
-    <button id="install_button" hidden>Install</button>
 
    <script>
         if ('serviceWorker' in navigator) {
