@@ -13,5 +13,9 @@
         "timeLabel": "Czas [hh:mm:ss]",
         "loadLabel": "Obciążenie [kN/m2]",
         "displacementLabel":"Przemieszczenie [mm]"
-    }
+    },
+    "livesensor": {
+        "title": "Live Sensor Data Polski"
+    }   
+
 }
