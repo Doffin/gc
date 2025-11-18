@@ -54,6 +54,25 @@ class gcLivePanel extends HTMLElement {
       // Could be used if you want to run logic on mode change
     }
   }
+connectedCallback() {
+    // Set initial mode based on system
+    this.setAttribute("mode", this.media.matches ? "dark" : "light");
+
+    // React to OS theme change
+    this.media.addEventListener("change", (e) => {
+      this.setAttribute("mode", e.matches ? "dark" : "light");
+    });
+
+    // Call translation if available
+    this.applyTranslations();
+  }
+
+  applyTranslations() {
+    // If your site has a global translate function:
+    if (window.translateElement) {
+      window.translateElement(this.shadowRoot);
+    }
+  }
 
   /** Update sensor values */
   update(data) {
