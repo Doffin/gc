@@ -9,7 +9,9 @@
         "body": "Dette er en enkel HTML5-side med språkvalg basert på JSON.",
         "graphTitle": "Forskyvning som funksjon av last",
         "xAxisTitle": "Last [kN/m2]",
-        "yAxisTitle": "Forskyvning [mm]"
-
+        "yAxisTitle": "Forskyvning [mm]",
+        "timeLabel": "Tid [hh:mm:ss]",
+        "loadLabel": "Last [kN/m2]",
+        "displacementLabel":"Setning [mm]"
     }
 }
