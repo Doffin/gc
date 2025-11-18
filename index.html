@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="w3.css">
 
     <title>GroundCheck</title>
-    <script src="w3.js"></script>    
+    <script src="w3.js"></script>
     <script src="chart.umd.min.js"></script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -28,11 +28,11 @@
     <label>Name: <input id="nameInput" value="" /></label>
     <button id="updateVars">Oppdater variabler</button>
     <input type="button" id="clear-cache" value="Refresh" onclick="clearCache()" />
-    <br/>
+    <br />
 
     <h1 data-i18n="content.title">TITTEL</h1>
     <p data-i18n="content.body">BODY</p>
-    <hr/>
+    <hr />
 
     <div class="w3-row">
         <div class="w3-col l4 w3-left">
@@ -45,12 +45,26 @@
         </div>
     </div>
     <div class="w3-panel w3-light-grey">
-    
+        <p id="messages">Messages will appear here.</p>
     </div>
+    <gc-live-panel id="live"></gc-live-panel>
 
-   <script>
+    <script>
+        const live = document.getElementById("live");
+
+        // Simuler innkommende sensor-data
+        setInterval(() => {
+            live.update({
+                temperature: (20 + Math.random() * 5).toFixed(2) + " °C",
+                humidity: (40 + Math.random() * 10).toFixed(1) + " %",
+                pressure: (1000 + Math.random() * 20).toFixed(1) + " hPa"
+            });
+        }, 1000);
+    </script>
+
+    <script>
         if ('serviceWorker' in navigator) {
-           // navigator.serviceWorker.register('./sw.js', { scope: './' });            
+            // navigator.serviceWorker.register('./sw.js', { scope: './' });            
         }
     </script>
     <script src="app.js"></script>
@@ -93,9 +107,9 @@
             ws.sendMessage = function (message) {
                 if (ws) {
                     ws.send(message);
-                    setTimeout(function(){
+                    setTimeout(function () {
                         showMessage("...");
-                     },2000);
+                    }, 2000);
                 } else {
                     showMessage('WebSocket is not connected.');
                 }
@@ -152,7 +166,7 @@
         const xValues = [0, 100, 200, 300, 400, 500, 600];
 
         const ctx = document.getElementById('myChart');
-        let chart=new Chart(ctx, {
+        let chart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: xValues,
@@ -194,4 +208,3 @@
 
 
 </html>
-
