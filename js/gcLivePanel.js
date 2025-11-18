@@ -1,11 +1,18 @@
 class gcLivePanel extends HTMLElement {
+  static get observedAttributes() {
+    return ["mode"];
+  }
+
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
 
-    // Initial DOM template
     this.shadowRoot.innerHTML = `
       <style>
+        :host {
+          display: block;
+        }
+
         .panel {
           font-family: sans-serif;
           border: 1px solid #ccc;
@@ -13,11 +20,22 @@ class gcLivePanel extends HTMLElement {
           padding: 12px;
           width: 250px;
           background: #f7f7f7;
+          color: #000;
+          transition: background .3s, color .3s;
         }
+
+        /* --- Dark Mode Styles --- */
+        :host([mode="dark"]) .panel {
+          background: #1f1f1f;
+          color: #eaeaea;
+          border-color: #444;
+        }
+
         .title {
           font-weight: bold;
           margin-bottom: 8px;
         }
+
         .sensor {
           margin: 4px 0;
         }
@@ -30,19 +48,31 @@ class gcLivePanel extends HTMLElement {
     `;
   }
 
-  // Method to update sensor values dynamically
+  /** Called when attributes such as mode change */
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "mode") {
+      // Could be used if you want to run logic on mode change
+    }
+  }
+
+  /** Update sensor values */
   update(data) {
     const container = this.shadowRoot.querySelector("#sensorContainer");
     container.innerHTML = "";
 
-    Object.entries(data).forEach(([key, value]) => {
+    for (const [key, value] of Object.entries(data)) {
       const row = document.createElement("div");
       row.className = "sensor";
       row.textContent = `${key}: ${value}`;
       container.appendChild(row);
-    });
+    }
+  }
+
+  /** Toggle between light and dark mode */
+  toggleMode() {
+    const current = this.getAttribute("mode");
+    this.setAttribute("mode", current === "dark" ? "light" : "dark");
   }
 }
 
-// Register the component
 customElements.define("gc-live-panel", gcLivePanel);
