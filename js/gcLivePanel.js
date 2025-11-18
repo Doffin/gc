@@ -68,6 +68,13 @@ class gcLivePanel extends HTMLElement {
     }
   }
 
+  applyTranslations() {
+    // If your site has a global translate function:
+    if (window.translateElement) {
+      window.translateElement(this.shadowRoot);
+    }
+  }
+
   /** Toggle between light and dark mode */
   toggleMode() {
     const current = this.getAttribute("mode");

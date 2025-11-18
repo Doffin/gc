@@ -27,6 +27,7 @@ function updateText() {
             el.textContent = interpolate(value, currentVariables);
         }
     });
+    document.querySelector("gc-live-panel").applyTranslations();
     updateChartText(chart);
     w3.includeHTML();
 }
