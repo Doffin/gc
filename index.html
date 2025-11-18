@@ -48,20 +48,6 @@
         <p id="messages">Messages will appear here.</p>
     </div>
     <gc-live-panel id="live"></gc-live-panel>
-
-    <script>
-        const live = document.getElementById("live");
-
-        // Simuler innkommende sensor-data
-        setInterval(() => {
-            live.update({
-                temperature: (20 + Math.random() * 5).toFixed(2) + " °C",
-                humidity: (40 + Math.random() * 10).toFixed(1) + " %",
-                pressure: (1000 + Math.random() * 20).toFixed(1) + " hPa"
-            });
-        }, 1000);
-    </script>
-
     <script>
         if ('serviceWorker' in navigator) {
             // navigator.serviceWorker.register('./sw.js', { scope: './' });            
@@ -202,6 +188,18 @@
                 }
             }
         });
+    </script>
+    <script>
+        const live = document.getElementById("live");
+
+        // Simuler innkommende sensor-data
+        setInterval(() => {
+            live.update({
+                temperature: (20 + Math.random() * 5).toFixed(2) + " °C",
+                humidity: (40 + Math.random() * 10).toFixed(1) + " %",
+                pressure: (1000 + Math.random() * 20).toFixed(1) + " hPa"
+            });
+        }, 1000);
     </script>
 
 </body>
