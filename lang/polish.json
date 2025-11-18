@@ -1,15 +1,17 @@
 {
     "menu": {
-        "home": "Home",
-        "about": "About",
-        "contact": "Contact"
+        "home": "Dom",
+        "about": "O",
+        "contact": "Kontakt"
     },
     "content": {
         "title": "Powitanie, {name}!",
         "body": "To prosta strona HTML5 z wyborem języka na podstawie JSON.",
-        "graphTitle": "Displacement as function of load",
-        "xAxisTitle": "Load [kN/m2]",
-        "yAxisTitle": "Displacement [mm]"
-
+        "graphTitle": "Przemieszczenie jako funkcja obciążenia",
+        "xAxisTitle": "Obciążenie [kN/m2]",
+        "yAxisTitle": "Przemieszczenie [mm]",
+        "timeLabel": "Czas [hh:mm:ss]",
+        "loadLabel": "Obciążenie [kN/m2]",
+        "displacementLabel":"Przemieszczenie [mm]"
     }
 }
