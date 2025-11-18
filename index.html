@@ -35,7 +35,9 @@
     <h1 data-i18n="content.title">TITTEL</h1>
     <p data-i18n="content.body">BODY</p>
     <hr />
-
+    <gc-live-panel id="live"></gc-live-panel>
+    <hr />
+     
     <div class="w3-row">
         <div class="w3-col l4 w3-left">
             <p class="w3-panel" w3-include-html="customers.html"></p>
@@ -49,7 +51,6 @@
     <div class="w3-panel w3-light-grey">
         <p id="messages">Messages will appear here.</p>
     </div>
-    <gc-live-panel id="live"></gc-live-panel>
     <script>
         if ('serviceWorker' in navigator) {
             // navigator.serviceWorker.register('./sw.js', { scope: './' });            
@@ -196,7 +197,7 @@
         // Simuler innkommende sensor-data
             setInterval(() => {
                 live.update({
-                    temperature: (20 + Math.random() * 5).toFixed(2) + " °C",
+                    temperature: (20 + Math.random() * 5).toFixed(1) + " °C",
                     humidity: (40 + Math.random() * 10).toFixed(1) + " %",
                     pressure: (1000 + Math.random() * 20).toFixed(1) + " hPa"
                 });
