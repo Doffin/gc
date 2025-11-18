@@ -2,7 +2,7 @@ const langSelect = document.getElementById("language-select");
 
 let currentLanguageData = {};
 let currentVariables = {
-    name: "Ola",
+    name: "Testbruker",
     count: 3
 };
 
@@ -28,19 +28,14 @@ function updateText() {
         }
     });
     updateChartText(chart);
-/*    
-    chart.options.plugins.title.textContent
-    chart.options.plugins.title.text = interpolate("graphTitle", currentVariables);
-    chart.options.scales.x.title.text = interpolate("xAxisTitle", currentVariables);
-    chart.options.scales.y.title.text = interpolate("yAxisTitle", currentVariables);
-    chart.update();
-    */
+    w3.includeHTML();
 }
 
 function updateChartText(chart) {
     chart.options.plugins.title.text = resolveKey(currentLanguageData, "content.graphTitle");
     chart.options.scales.x.title.text = resolveKey(currentLanguageData, "content.xAxisTitle");
     chart.options.scales.y.title.text = resolveKey(currentLanguageData, "content.yAxisTitle");
+    chart.data.datasets[0].label = resolveKey(currentLanguageData, "content.displacementLabel");
     chart.update();
 }
 
