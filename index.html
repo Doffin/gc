@@ -15,10 +15,11 @@
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script defer src="js/languageLoader.js"></script>
+    <script defer src="js/gc-live-panel.js"></script>
 </head>
 
 <body class="w3-container">
-    <p id="versionNr">Version 1.0.21</p>
+    <p id="versionNr">Version 1.0.22</p>
     <select id="language-select">
         <option value="norsk">Norsk</option>
         <option value="english">English</option>
@@ -192,7 +193,6 @@
     <script>
         const live = document.getElementById("live");
         // Simuler innkommende sensor-data
-        /**
             setInterval(() => {
                 live.update({
                     temperature: (20 + Math.random() * 5).toFixed(2) + " °C",
@@ -200,7 +200,6 @@
                     pressure: (1000 + Math.random() * 20).toFixed(1) + " hPa"
                 });
             }, 1000);
-        */
     </script>
 
 </body>
