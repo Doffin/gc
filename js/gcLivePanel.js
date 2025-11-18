@@ -9,6 +9,10 @@ class gcLivePanel extends HTMLElement {
 
     this.shadowRoot.innerHTML = `
       <style>
+        :host {
+          display: block;
+        }
+
         .panel {
           font-family: sans-serif;
           border: 1px solid #ccc;
@@ -20,6 +24,7 @@ class gcLivePanel extends HTMLElement {
           transition: background .3s, color .3s;
         }
 
+        /* --- Dark Mode Styles --- */
         :host([mode="dark"]) .panel {
           background: #1f1f1f;
           color: #eaeaea;
@@ -30,6 +35,10 @@ class gcLivePanel extends HTMLElement {
           font-weight: bold;
           margin-bottom: 8px;
         }
+
+        .sensor {
+          margin: 4px 0;
+        }
       </style>
 
       <div class="panel">
@@ -37,40 +46,32 @@ class gcLivePanel extends HTMLElement {
         <div id="sensorContainer"></div>
       </div>
     `;
-
-    // Detect system dark mode
-    this.media = window.matchMedia("(prefers-color-scheme: dark)");
   }
 
-  connectedCallback() {
-    // Set initial mode based on system
-    this.setAttribute("mode", this.media.matches ? "dark" : "light");
-
-    // React to OS theme change
-    this.media.addEventListener("change", (e) => {
-      this.setAttribute("mode", e.matches ? "dark" : "light");
-    });
-
-    // Call translation if available
-    this.applyTranslations();
-  }
-
-  applyTranslations() {
-    // If your site has a global translate function:
-    if (window.translateElement) {
-      window.translateElement(this.shadowRoot);
+  /** Called when attributes such as mode change */
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "mode") {
+      // Could be used if you want to run logic on mode change
     }
   }
 
+  /** Update sensor values */
   update(data) {
     const container = this.shadowRoot.querySelector("#sensorContainer");
     container.innerHTML = "";
 
     for (const [key, value] of Object.entries(data)) {
       const row = document.createElement("div");
+      row.className = "sensor";
       row.textContent = `${key}: ${value}`;
       container.appendChild(row);
     }
+  }
+
+  /** Toggle between light and dark mode */
+  toggleMode() {
+    const current = this.getAttribute("mode");
+    this.setAttribute("mode", current === "dark" ? "light" : "dark");
   }
 }
 
