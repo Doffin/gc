@@ -27,8 +27,8 @@ function updateText() {
             el.textContent = interpolate(value, currentVariables);
         }
     });
-    document.querySelector("gc-live-panel").applyTranslations();
     updateChartText(chart);
+    document.getElementById("live").updateLanguage(currentLanguageData);
     w3.includeHTML();
 }
 

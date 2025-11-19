@@ -99,6 +99,12 @@ connectedCallback() {
     const current = this.getAttribute("mode");
     this.setAttribute("mode", current === "dark" ? "light" : "dark");
   }
+
+  updateLanguage(currentLanguageData)
+  {
+    const title = this.shadowRoot.querySelector(".title");
+    title.textContent = resolveKey(currentLanguageData, "livesensor.title") || "Live Sensor Data"; 
+  }
 }
 
 customElements.define("gc-live-panel", gcLivePanel);
