@@ -62,13 +62,6 @@ class gcLivePanel extends HTMLElement {
   }
 
   connectedCallback() {
-    // Set initial mode based on system
-    //this.setAttribute("mode", this.media.matches ? "dark" : "light");
-
-    // React to OS theme change
-    //this.media.addEventListener("change", (e) => {
-      //this.setAttribute("mode", e.matches ? "dark" : "light");
-    //});
 
   }
 
