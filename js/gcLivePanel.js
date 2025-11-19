@@ -44,7 +44,7 @@ class gcLivePanel extends HTMLElement {
       <div class="panel">
         <div class="title" data-i18n="livesensor.title">Live Sensor Data</div>
         <div id="sensorContainer">
-        <table style="width:100%;border:1px solid #0cc;">
+        <table style="width:100%;">
         <tr><td><label data-i18n="livesensor.tid">Tid</label></td> <td><span id="tid">--</span></td></tr>
         <tr><td><label data-i18n="livesensor.last">Last</label></td> <td><span id="last">--</span></td></tr>
         <tr><td><label data-i18n="livesensor.setning">Setning</label></td> <td><span id="setning">--</span></td></tr>
