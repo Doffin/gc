@@ -79,7 +79,7 @@ class gcLivePanel extends HTMLElement {
   /** Toggle between light and dark mode */
   setColorMode(newMode) {
     const current = this.getAttribute("mode");
-    this.setAttribute("mode", current === "dark" ? "light" : "dark");
+    this.setAttribute("mode", newMode === "dark" ? "light" : "dark");
   }
 
   updateLanguage(currentLanguageData) {
