@@ -26,7 +26,7 @@ class gcLivePanel extends HTMLElement {
 
         /* --- Dark Mode Styles --- */
         :host([mode="dark"]) .panel {
-          background: #222222;
+          background: #1f1f1f;
           color: #eaeaea;
           border-color: #444444;
           border: 1px solid #444444;
