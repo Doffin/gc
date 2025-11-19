@@ -73,7 +73,9 @@ class gcLivePanel extends HTMLElement {
   /** Update sensor values */
   update(data) {
     for (const [key, value] of Object.entries(data)) {
-      this.shadowRoot.getElementById(key).textContent = `${value}`;
+      let prop = this.shadowRoot.getElementById(key);
+      if (prop) 
+        prop.textContent = `${value}`;
     }
   }
 
