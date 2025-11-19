@@ -19,7 +19,7 @@
 </head>
 
 <body class="w3-container">
-    <p id="versionNr">Version 1.0.33</p>
+    <p id="versionNr">Version 1.0.34</p>
     <select id="language-select">
         <option value="norsk">Norsk</option>
         <option value="english">English</option>
@@ -117,6 +117,9 @@
             ws.onmessage = function (event) {
                 try {
                     const msg = JSON.parse(event.data);
+                    if(msg.type && msg.type === 'ptm_live') {
+                        live.update(msg);
+                    }
                     if (msg.tid) {
                         const tidElem = document.getElementById('live_tid');
                         if (tidElem) tidElem.innerHTML = msg.tid;
@@ -206,7 +209,7 @@
     <script>
 
         const live = document.getElementById("live");
-        // Simuler innkommende sensor-data
+        /* Simuler innkommende sensor-data
             setInterval(() => {
                 live.update({
                     temperature: (20 + Math.random() * 5).toFixed(1) + " °C",
@@ -214,6 +217,7 @@
                     pressure: (1000 + Math.random() * 20).toFixed(1) + " hPa"
                 });
             }, 1000);
+            */
     </script>
 
 </body>
