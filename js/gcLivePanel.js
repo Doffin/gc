@@ -28,8 +28,8 @@ class gcLivePanel extends HTMLElement {
         :host([mode="dark"]) .panel {
           background: #222222;
           color: #eaeaea;
-          border-color: #666666;
-          border: 1px solid #666666;
+          border-color: #888888;
+          border: 1px solid #888888;
         }
 
         .title {
@@ -58,6 +58,7 @@ class gcLivePanel extends HTMLElement {
       // Could be used if you want to run logic on mode change
     }
   }
+
   connectedCallback() {
     // Set initial mode based on system
     this.setAttribute("mode", this.media.matches ? "dark" : "light");
@@ -83,8 +84,6 @@ class gcLivePanel extends HTMLElement {
   }
 
   updateLanguage(currentLanguageData) {
-    //const title = this.shadowRoot.querySelector(".title");
-    //title.textContent = resolveKey(currentLanguageData, "livesensor.title") || "Live Sensor Data";
     this.shadowRoot.querySelectorAll("[data-i18n]").forEach(el => {
         const key = el.getAttribute("data-i18n");
         let value = resolveKey(currentLanguageData, key);
