@@ -16,8 +16,12 @@
     },
     "livesensor": {
         "title": "Live Sensor Data",
-        "tid":     "Time [hh:mm:ss]",
-        "last":    "Load [kN/m2]",    
-        "setning": "Displacement[mm]"
+        "tid":     "Time",
+        "last":    "Load",    
+        "setning": "Displacement",
+        "tidUnit":     "[hh:mm:ss]",
+        "lastUnit":    "[kN/m2]",       
+        "setningUnit": "[mm]"
+
     }   
 }

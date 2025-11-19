@@ -16,9 +16,12 @@
     },
     "livesensor": {
         "title": "Siste sensormålinger",
-        "tid":     "Tid [hh:mm:ss]",
-        "last":    "Last [kN/m2]",       
-        "setning": "Setning [mm]"
+        "tid":     "Tid",
+        "last":    "Last",    
+        "setning": "Setning",
+        "tidUnit":     "[hh:mm:ss]",
+        "lastUnit":    "[kN/m2]",       
+        "setningUnit": "[mm]"
     }   
 
 }
