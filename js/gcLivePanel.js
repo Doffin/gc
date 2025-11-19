@@ -43,7 +43,11 @@ class gcLivePanel extends HTMLElement {
 
       <div class="panel">
         <div class="title" data-i18n="livesensor.title">Live Sensor Data</div>
-        <div id="sensorContainer"></div>
+        <div id="sensorContainer">
+        <label data-i18n="livesensor.temperature">Temperature:</label> <span id="temperature">--</span><br />
+        <label data-i18n="livesensor.humidity">Humidity:</label> <span id="humidity">--</span><br />
+        <label data-i18n="livesensor.pressure">Pressure:</label> <span id="pressure">--</span><br />
+        </div>
       </div>
     `;
   }
@@ -76,6 +80,12 @@ connectedCallback() {
 
   /** Update sensor values */
   update(data) {
+    for (const [key, value] of Object.entries(data)) {
+      document.getElementById(key).textContent += `${value}`;
+    }
+  }
+
+  originalUpdate(data) {
     const container = this.shadowRoot.querySelector("#sensorContainer");
     container.innerHTML = "";
 
