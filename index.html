@@ -28,7 +28,7 @@
     <button id="install_button" hidden>Install</button>
     <label>Name: <input id="nameInput" value="" /></label>
     <button id="updateVars">Oppdater variabler</button>
-    <button onclick="setColorMode(colorMode)">Toggle Dark Mode</button>
+    <button onclick="toggleColorMode()">Toggle Dark Mode</button>
     <input type="button" id="clear-cache" value="Refresh" onclick="clearCache()" />
     <br />
 
@@ -58,7 +58,7 @@
     </script>
     <script src="app.js"></script>
     <script>
-        let colorMode = 'light';
+        let mode = 'light';
         w3.includeHTML();
         let ws = null;
         window.onload = function () {
@@ -71,15 +71,15 @@
             location.reload();
         }
 
-        function setColorMode(mode) {
+        function toggleColorMode() {
+            if(mode === 'dark') {
+                mode = 'light';
+            } else {
+                mode = 'dark';
+            }   
             document.body.style.backgroundColor = mode === 'dark' ? '#121212' : '#ffffff';
             document.body.style.color = mode === 'dark' ? '#e0e0e0' : '#000000';
             live.setMode(mode);
-            if(mode === 'dark') {
-                colorMode = 'light';
-            } else {
-                colorMode = 'dark';
-            }   
         }    
 
         function showMessage(message) {
