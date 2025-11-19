@@ -61,12 +61,12 @@ class gcLivePanel extends HTMLElement {
 
   connectedCallback() {
     // Set initial mode based on system
-    this.setAttribute("mode", this.media.matches ? "dark" : "light");
+    //this.setAttribute("mode", this.media.matches ? "dark" : "light");
 
     // React to OS theme change
-    this.media.addEventListener("change", (e) => {
-      this.setAttribute("mode", e.matches ? "dark" : "light");
-    });
+    //this.media.addEventListener("change", (e) => {
+      //this.setAttribute("mode", e.matches ? "dark" : "light");
+    //});
 
   }
 
@@ -79,8 +79,8 @@ class gcLivePanel extends HTMLElement {
 
   /** Toggle between light and dark mode */
   setColorMode(newMode) {
-    const current = this.getAttribute("mode");
-    this.setAttribute("mode", newMode === "dark" ? "dark" : "light");
+    //const current = this.getAttribute("mode");
+    this.setAttribute("mode", newMode);
   }
 
   updateLanguage(currentLanguageData) {
