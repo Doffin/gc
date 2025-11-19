@@ -58,7 +58,7 @@ class gcLivePanel extends HTMLElement {
       // Could be used if you want to run logic on mode change
     }
   }
-connectedCallback() {
+  connectedCallback() {
     // Set initial mode based on system
     this.setAttribute("mode", this.media.matches ? "dark" : "light");
 
@@ -67,15 +67,6 @@ connectedCallback() {
       this.setAttribute("mode", e.matches ? "dark" : "light");
     });
 
-    // Call translation if available
-    this.applyTranslations();
-  }
-
-  applyTranslations() {
-    // If your site has a global translate function:
-    if (window.translateElement) {
-      window.translateElement(this.shadowRoot);
-    }
   }
 
   /** Update sensor values */
@@ -85,35 +76,15 @@ connectedCallback() {
     }
   }
 
-  originalUpdate(data) {
-    const container = this.shadowRoot.querySelector("#sensorContainer");
-    container.innerHTML = "";
-
-    for (const [key, value] of Object.entries(data)) {
-      const row = document.createElement("div");
-      row.className = "sensor";
-      row.textContent = `${key}: ${value}`;
-      container.appendChild(row);
-    }
-  }
-
-  applyTranslations() {
-    // If your site has a global translate function:
-    if (window.translateElement) {
-      window.translateElement(this.shadowRoot);
-    }
-  }
-
   /** Toggle between light and dark mode */
   toggleMode() {
     const current = this.getAttribute("mode");
     this.setAttribute("mode", current === "dark" ? "light" : "dark");
   }
 
-  updateLanguage(currentLanguageData)
-  {
+  updateLanguage(currentLanguageData) {
     const title = this.shadowRoot.querySelector(".title");
-    title.textContent = resolveKey(currentLanguageData, "livesensor.title") || "Live Sensor Data"; 
+    title.textContent = resolveKey(currentLanguageData, "livesensor.title") || "Live Sensor Data";
   }
 }
 
