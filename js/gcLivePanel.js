@@ -31,6 +31,12 @@ class gcLivePanel extends HTMLElement {
           border-color: #666666;
           border: 1px solid #666666;
         }
+        :host([mode="dark"]) .body {
+          background: #111111;
+          color: #eaeaea;
+          border-color: #666666;
+          border: 1px solid #666666;
+        }
 
         .title {
           font-weight: bold;
