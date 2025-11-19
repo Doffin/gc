@@ -81,7 +81,7 @@ connectedCallback() {
   /** Update sensor values */
   update(data) {
     for (const [key, value] of Object.entries(data)) {
-      document.getElementById(key).textContent += `${value}`;
+      document.getElementById(key).textContent = `${value}`;
     }
   }
 
