@@ -19,8 +19,8 @@
         "tid":     "Time",
         "last":    "Load",    
         "setning": "Displacement",
-        "tidUnit":     "[hh:mm:ss]",
-        "lastUnit":    "[kN/m2]",       
+        "tidUnit": "[hh:mm:ss]",
+        "lastUnit": "[kN/m2]",       
         "setningUnit": "[mm]"
 
     }   
