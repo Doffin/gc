@@ -31,12 +31,6 @@ class gcLivePanel extends HTMLElement {
           border-color: #666666;
           border: 1px solid #666666;
         }
-        :host([mode="dark"]) .body {
-          background: #111111;
-          color: #eaeaea;
-          border-color: #666666;
-          border: 1px solid #666666;
-        }
 
         .title {
           font-weight: bold;
@@ -47,7 +41,6 @@ class gcLivePanel extends HTMLElement {
           margin: 4px 0;
         }
       </style>
-      <div class="body">
       <div class="panel">
         <div class="title" data-i18n="livesensor.title">Live Sensor Data</div>
         <div id="sensorContainer">
@@ -55,7 +48,6 @@ class gcLivePanel extends HTMLElement {
         <label data-i18n="livesensor.humidity">Humidity:</label> <span id="humidity">--</span><br />
         <label data-i18n="livesensor.pressure">Pressure:</label> <span id="pressure">--</span><br />
         </div>
-      </div>
       </div>
     `;
   }
@@ -85,7 +77,7 @@ class gcLivePanel extends HTMLElement {
   }
 
   /** Toggle between light and dark mode */
-  toggleMode() {
+  setColorMode(newMode) {
     const current = this.getAttribute("mode");
     this.setAttribute("mode", current === "dark" ? "light" : "dark");
   }
