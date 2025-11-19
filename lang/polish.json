@@ -16,9 +16,9 @@
     },
     "livesensor": {
         "title": "Dane z czujników na żywo",
-        "temperature": "Temperatura:",
-        "humidity": "Wilgotność:",
-        "pressure": "Ciśnienie:"
+        "tid":     "Czas [hh:mm:ss]    :",
+        "last":    "Obciążenie [kN/m2] :",
+        "setning": "Przemieszczenie[mm]:"
     }   
 
 }

@@ -16,9 +16,9 @@
     },
     "livesensor": {
         "title": "Siste sensormålinger",
-        "temperature": "Temperatur:",
-        "humidity": "Luftfuktighet:",
-        "pressure": "Trykk:"
+        "tid":     "Tid [hh:mm:ss] :",
+        "last":    "Last [kN/m2]   :",    
+        "setning": "Setning [mm]   :"
     }   
 
 }
