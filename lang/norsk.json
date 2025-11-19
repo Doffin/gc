@@ -15,7 +15,10 @@
         "displacementLabel":"Setning [mm]"
     },
     "livesensor": {
-        "title": "Siste sensormålinger"
+        "title": "Siste sensormålinger",
+        "temperature": "Temperatur:",
+        "humidity": "Luftfuktighet:",
+        "pressure": "Trykk:"
     }   
 
 }

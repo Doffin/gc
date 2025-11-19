@@ -15,6 +15,9 @@
         "displacementLabel":"Displacement [mm]"
     },
     "livesensor": {
-        "title": "Live Sensor Data"
+        "title": "Live Sensor Data",
+        "temperature": "Temperature:",
+        "humidity": "Humidity:",    
+        "pressure": "Pressure:"
     }   
 }

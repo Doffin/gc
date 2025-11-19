@@ -83,8 +83,15 @@ class gcLivePanel extends HTMLElement {
   }
 
   updateLanguage(currentLanguageData) {
-    const title = this.shadowRoot.querySelector(".title");
-    title.textContent = resolveKey(currentLanguageData, "livesensor.title") || "Live Sensor Data";
+    //const title = this.shadowRoot.querySelector(".title");
+    //title.textContent = resolveKey(currentLanguageData, "livesensor.title") || "Live Sensor Data";
+    this.shadowRoot.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        let value = resolveKey(currentLanguageData, key);
+        if (value) {
+            el.textContent = interpolate(value, currentVariables);
+        }
+    });
   }
 }
 

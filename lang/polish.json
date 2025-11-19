@@ -15,7 +15,10 @@
         "displacementLabel":"Przemieszczenie [mm]"
     },
     "livesensor": {
-        "title": "Live Sensor Data Polski"
+        "title": "Dane z czujników na żywo",
+        "temperature": "Temperatura:",
+        "humidity": "Wilgotność:",
+        "pressure": "Ciśnienie:"
     }   
 
 }
