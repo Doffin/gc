@@ -21,16 +21,13 @@ baseStyles.replaceSync(`
     :host([mode="dark"]) {
         color: #eaeaea;
         background-color: #1e1e1e;
-        border: 1px solid var(--panel-border-dark);
-        box-shadow: 0 2px 6px var(--panel-shadow-dark);
-        border-radius: var(--panel-radius);
-        padding: var(--panel-padding);
-        background-color: var(--panel-bg-dark);
+        border: 1px solid #a00;
     }
 
     :host([mode="light"]) {
         color: #111;
         background-color: #fff;
+        border: 1px solid #0a0;
     }
 
     /* Felles CSS-variabler for alle komponenter */
