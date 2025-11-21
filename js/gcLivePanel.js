@@ -18,7 +18,7 @@ class gcLivePanel extends BaseComponent {
       .sensor-grid {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 12px;
+        gap: 8px;
         width: 100%;
       }
 
@@ -29,9 +29,9 @@ class gcLivePanel extends BaseComponent {
       }
 
       .label {
-        font-weight: 300;
-        font-size: 0.9em;
-        margin-bottom: 4px;
+        font-weight: 100;
+        font-size: 1.0em;
+        margin-bottom: 2px;
       }
 
       .reading {
@@ -44,16 +44,16 @@ class gcLivePanel extends BaseComponent {
       .value {
         text-align: left;
         font-variant-numeric: tabular-nums;
-        font-size: 1.8em;
-        font-weight: 300;
+        font-size: 1.6em;
+        font-weight: 200;
         line-height: 1;
       }
 
       .unit {
-        font-size: 1.8em;
+        font-size: 1.6em;
         opacity: 0.85;
         margin-top: 0;
-        margin-left: 6px;
+        margin-left: 4px;
       }
 
       @media (max-width: 600px) {
@@ -64,7 +64,7 @@ class gcLivePanel extends BaseComponent {
     </style>
 
     <div class="panel">
-      <div class="title" data-i18n="livesensor.title">Live Sensor Data</div>
+      <h2 class="title" data-i18n="livesensor.title">Live Sensor Data</h2>
       
       <div class="content-grid">
         <div class="sensor-grid">
@@ -104,7 +104,7 @@ class gcLivePanel extends BaseComponent {
       const canvas = document.createElement('canvas');
       canvas.id = 'gc-chart';
       canvas.style.width = '100%';
-      canvas.style.height = '280px';
+      canvas.style.height = '250px';
       graphSlot.appendChild(canvas);
 
       // Initialize Chart if available
