@@ -64,6 +64,9 @@
         let ws = null;
         window.onload = function () {
             initWebSocket();
+            document.body.style.backgroundColor = mode === 'dark' ? '#121212' : '#ffffff';
+            document.body.style.color = mode === 'dark' ? '#e0e0e0' : '#000000';
+            document.getElementById('live').setColorMode(mode);
         };
 
         const key = 'vk_test_v1';
