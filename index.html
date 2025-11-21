@@ -38,16 +38,6 @@
     <gc-live-panel id="live" style="width: 50%;"></gc-live-panel>
     <hr />
      
-    <div class="w3-row">
-        <div class="w3-col l4 w3-left">
-            <p class="w3-panel" w3-include-html="customers.html"></p>
-        </div>
-        <div class="w3-col l8 w3-center">
-            <div class="w3-panel w3-card-4">
-                <canvas id="myChart" style="width:80%;max-width:700px"></canvas>
-            </div>
-        </div>
-    </div>
     <div class="w3-panel w3-light-grey">
         <p id="messages">Messages will appear here.</p>
     </div>
@@ -128,21 +118,6 @@
                     if(msg.type && msg.type === 'ptm_live') {
                         live.update(msg);
                     }
-                    if (msg.tid) {
-                        const tidElem = document.getElementById('live_tid');
-                        if (tidElem) tidElem.innerHTML = msg.tid;
-                    }
-                    if (msg.last) {
-                        const lastElem = document.getElementById('live_last');
-                        if (lastElem) lastElem.innerHTML = msg.last;
-                    }
-                    if (msg.setning) {
-                        const setningElem = document.getElementById('live_setning');
-                        if (setningElem) setningElem.innerHTML = msg.setning;
-                    }
-                    if (msg.type && msg.type === 'ptm_save') {
-                        updateTable();
-                    }
                     return;
                 } catch (error) {
                     showMessage(event.data);
@@ -158,61 +133,6 @@
             }
         }
 
-        function updateTable() {
-            let lastSuffix = '10';
-            // Shift existing rows up
-            for (let i = 1; i < 10; i++) {
-                let toSuffix = i < 10 ? `0${i}` : `${i}`;
-                let fromSuffix = i < 9 ? `0${i + 1}` : `${i + 1}`;
-                lastSuffix = fromSuffix;
-                document.getElementById(`tid_` + toSuffix).innerHTML = document.getElementById(`tid_` + fromSuffix).innerHTML;
-                document.getElementById(`last_` + toSuffix).innerHTML = document.getElementById(`last_` + fromSuffix).innerHTML;
-                document.getElementById(`setning_` + toSuffix).innerHTML = document.getElementById(`setning_` + fromSuffix).innerHTML;
-            }
-            document.getElementById('tid_' + lastSuffix).innerHTML = document.getElementById(`live_tid`).innerHTML;
-            document.getElementById('last_' + lastSuffix).innerHTML = document.getElementById(`live_last`).innerHTML;
-            document.getElementById('setning_' + lastSuffix).innerHTML = document.getElementById(`live_setning`).innerHTML;
-        }
-
-        const xValues = [0, 100, 200, 300, 400, 500, 600];
-
-        const ctx = document.getElementById('myChart');
-        let chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: xValues,
-                datasets: [{
-                    label: 'Displacement as function of load',
-                    borderColor: 'blue',
-                    data: [0, 10, 25, 40, 60, 85, 120],
-                    fill: false,
-                    tension: 0.1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Displacement as function of load'
-                    }
-                },
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Load [kN/m2]'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Displacement [mm]'
-                        }
-                    }
-                }
-            }
-        });
     </script>
 
 </body>

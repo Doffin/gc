@@ -122,13 +122,20 @@ class gcLivePanel extends BaseComponent {
                 borderColor: '#007bff',
                 backgroundColor: 'rgba(0,123,255,0.15)',
                 tension: 0.3,
-                fill: true,
+                fill: false,
               }]
             },
             options: {
               responsive: true,
               maintainAspectRatio: false,
-              plugins: { legend: { display: false } },
+              plugins: { 
+                title: {
+                  text: "Setning som funksjon av Last",
+                  color: '#fff', 
+                  display: true
+                },
+                legend: { display: false } 
+              },
               scales: { x: { display: true }, y: { display: true, beginAtZero: true } }
             }
           });
