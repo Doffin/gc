@@ -21,6 +21,11 @@ baseStyles.replaceSync(`
     :host([mode="dark"]) {
         color: #eaeaea;
         background-color: #1e1e1e;
+        border: 1px solid var(--panel-border-dark);
+        box-shadow: 0 2px 6px var(--panel-shadow-dark);
+        border-radius: var(--panel-radius);
+        padding: var(--panel-padding);
+        background-color: var(--panel-bg-dark);
     }
 
     :host([mode="light"]) {
