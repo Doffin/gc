@@ -21,12 +21,14 @@ baseStyles.replaceSync(`
     :host([mode="dark"]) {
         color: #eaeaea;
         background-color: #1e1e1e;
+        border-radius: 8px;
         border: 1px solid #444;
     }
 
     :host([mode="light"]) {
         color: #111;
         background-color: #fff;
+        border-radius: 8px;
         border: 1px solid #ccc;
     }
 
@@ -37,6 +39,12 @@ baseStyles.replaceSync(`
         --panel-bg-light: #f7f7f7;
         --panel-bg-dark: #2a2a2a;
     }
+    .panel {
+        border-radius: var(--panel-radius);
+        padding: var(--panel-padding);
+        background-color: var(--panel-bg-dark);
+    }
+
 `);
 
 
@@ -44,15 +52,15 @@ baseStyles.replaceSync(`
    2. Hjelpefunksjoner (resolveKey, interpolate, debounce)
 --------------------------------------------------------- */
 export function resolveKey(obj, key) {
-    return key.split('.').reduce((o, k) => (o && o[k] != null ? o[k] : null), obj);
+    return key.split('.').reduce((o, p) => o?.[p], obj);
 }
 
-export function interpolate(text, vars = {}) {
-    return text.replace(/\{\{(.*?)\}\}/g, (_, key) => {
-        const v = vars[key.trim()];
-        return v != null ? v : "";
+export function interpolate(template, variables = {}) {
+    return template.replace(/\{([^}]+)\}/g, (_, key) => {
+        return variables[key] ?? `{${key}}`;
     });
 }
+
 
 export function debounce(func, delay = 100) {
     let timeout;
@@ -129,10 +137,10 @@ export class BaseComponent extends HTMLElement {
     /* --------------------------------------------------------
        5. Hooks – kan overstyres i barnekomponenter
     --------------------------------------------------------- */
-    onConnected() {}
-    onDisconnected() {}
-    onModeChanged(_newMode) {}
-    onAttributeChanged(_name, _old, _new) {}
+    onConnected() { }
+    onDisconnected() { }
+    onModeChanged(_newMode) { }
+    onAttributeChanged(_name, _old, _new) { }
 
 
     /* --------------------------------------------------------
@@ -166,6 +174,34 @@ export class BaseComponent extends HTMLElement {
             if (text) el.textContent = interpolate(text, this._langVars || {});
         });
     }
+
+    updateLanguage(currentLanguageData, currentVariables = {}) {
+
+        this.shadowRoot.querySelectorAll("[data-i18n]").forEach(el => {
+
+            const key = el.getAttribute("data-i18n");
+
+            // hent riktig tekst fra JSON (nå med dot-notation støtte)
+            const raw = resolveKey(currentLanguageData, key);
+
+            // hvis nøkkelen ikke finnes → logg, men ikke crash
+            if (raw === undefined || raw === null) {
+                console.warn("Missing i18n key:", key);
+                return;
+            }
+
+            // interpoler tekst (f.eks "Hello {name}")
+            let text = interpolate(raw, currentVariables);
+
+            // fallback dersom interpolate returnerer undefined/null
+            if (text === undefined || text === null) {
+                text = raw;
+            }
+
+            el.textContent = text;
+        });
+    }
+
 
 
     /* --------------------------------------------------------

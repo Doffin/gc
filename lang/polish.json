@@ -20,8 +20,8 @@
         "last":    "Obciążenie",
         "setning": "Przemieszczenie",
         "tidUnit":     "[hh:mm:ss]",
-        "lastUnit":    "[kN/m2]",
-        "setningUnit": "[mm]"
+        "lastUnit": "kN/m²",       
+        "setningUnit": "mm"
     }   
 
 }

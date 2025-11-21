@@ -8,8 +8,8 @@
         "title": "Welcome, {name}!",
         "body": "This is a simple HTML5 page with language selection based on JSON.",
         "graphTitle": "Displacement as function of load",
-        "xAxisTitle": "Load [kN/m2]",
-        "yAxisTitle": "Displacement [mm]",
+        "xAxisTitle": "Load kN/m²",
+        "yAxisTitle": "Displacement mm",
         "timeLabel": "Time [hh:mm:ss]",
         "loadLabel": "Load [kN/m2]",
         "displacementLabel":"Displacement [mm]"
@@ -19,9 +19,8 @@
         "tid":     "Time",
         "last":    "Load",    
         "setning": "Displacement",
-        "tidUnit": "[hh:mm:ss]",
-        "lastUnit": "[kN/m2]",       
-        "setningUnit": "[mm]"
+        "lastUnit": "kN/m²",       
+        "setningUnit": "mm"
 
     }   
 }

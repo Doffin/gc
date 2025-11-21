@@ -8,20 +8,20 @@
         "title": "Velkommen!",
         "body": "Dette er en enkel HTML5-side med språkvalg basert på JSON.",
         "graphTitle": "Forskyvning som funksjon av last",
-        "xAxisTitle": "Last [kN/m2]",
-        "yAxisTitle": "Forskyvning [mm]",
-        "timeLabel": "Tid [hh:mm:ss]",
-        "loadLabel": "Last [kN/m2]",
-        "displacementLabel":"Setning [mm]"
+        "xAxisTitle": "Last kN/m²",
+        "yAxisTitle": "Forskyvning mm",
+        "timeLabel": "Tid hh:mm:ss",
+        "loadLabel": "Last kN/m²",
+        "displacementLabel":"Setning mm"
     },
     "livesensor": {
         "title": "Siste sensormålinger",
         "tid":     "Tid",
         "last":    "Last",    
         "setning": "Setning",
-        "tidUnit":     "[hh:mm:ss]",
-        "lastUnit":    "[kN/m2]",       
-        "setningUnit": "[mm]"
+        "tidUnit": "hh:mm:ss",
+        "lastUnit": "kN/m²",       
+        "setningUnit": "mm"
     }   
 
 }
