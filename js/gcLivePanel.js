@@ -104,7 +104,7 @@ class gcLivePanel extends BaseComponent {
       const canvas = document.createElement('canvas');
       canvas.id = 'gc-chart';
       canvas.style.width = '100%';
-      canvas.style.height = '180px';
+      canvas.style.height = '280px';
       graphSlot.appendChild(canvas);
 
       // Initialize Chart if available
@@ -136,9 +136,36 @@ class gcLivePanel extends BaseComponent {
                 },
                 legend: { display: false } 
               },
-              scales: { x: { display: true }, y: { display: true, beginAtZero: true } }
+              scales: { 
+                x: { 
+                  display: true,
+                  color: '#fff',
+                  title: {
+                    display: true,
+                    text: 'Last',
+                    color: '#fff'
+                  },
+                  grid: {
+                    color: '#aaa',
+                  },
+                },                 
+                y:{
+                  display: true,
+                  axis_color: '#fff',
+                  title: {
+                    display: true,   
+                    text: 'Setning',
+                    color: '#fff'
+                  },   
+                  grid: {
+                    color: '#aaa',
+                  },
+                   
+                }
+               }
             }
-          });
+          } 
+            );
           // buffer for partial updates
           this._pendingLast = null;
           this._pendingSetning = null;
@@ -163,6 +190,18 @@ class gcLivePanel extends BaseComponent {
       this._chart = null;
     }
     if (super.disconnectedCallback) super.disconnectedCallback();
+  }
+
+  updateLanguage(languageData) {
+    this.setLanguageData(languageData);
+    if (this._chart) {
+      const chart = this._chart;
+      chart.options.plugins.title.text = resolveKey(languageData, "content.graphTitle");
+      chart.options.scales.x.title.text = resolveKey(languageData, "content.xAxisTitle");
+      chart.options.scales.y.title.text = resolveKey(languageData, "content.yAxisTitle");
+      chart.data.datasets[0].label = resolveKey(languageData, "content.displacementLabel");
+      chart.update();
+    }
   }
 
   update(data) {
