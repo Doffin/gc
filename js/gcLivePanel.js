@@ -5,16 +5,46 @@ class gcLivePanel extends BaseComponent {
 
   onConnected() {
     this.shadowRoot.innerHTML = `
-      <div class="panel">
-        <div class="title" data-i18n="livesensor.title">Live Sensor Data</div>
-        <div id="sensorContainer">
-          <table style="width: 100%; border-collapse: collapse;">
-          <tr><td><label data-i18n="livesensor.tid">Tid</label></td> <td style="text-align: right"><span id="tid">--</span></td><td><span data-i18n="livesensor.tidUnit">--</span></td></tr>
-          <tr><td><label data-i18n="livesensor.last">Last</label></td> <td style="text-align: right"><span id="last">--</span></td><td><span data-i18n="livesensor.lastUnit">--</span></td></tr>
-          <tr><td><label data-i18n="livesensor.setning">Setning</label></td> <td style="text-align: right"><span id="setning">--</span></td><td><span data-i18n="livesensor.setningUnit">--</span></td></tr>
-          </table>
-        </div>
-        </div>
+    <style>
+      .sensor-grid {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 6px 10px;
+        align-items: center;
+        width: 100%;
+        padding-top: 6px;
+      }
+
+      .label {
+        font-weight: 500;
+      }
+
+      .value {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .unit {
+        opacity: 0.75;
+      }
+    </style>
+
+    <div class="panel" style="padding: 10px; box-sizing: border-box;">
+      <div class="title" data-i18n="livesensor.title">Live Sensor Data</div>
+      <div class="sensor-grid">
+        <div class="label" data-i18n="livesensor.tid">Tid</div>
+        <div class="value" id="tid">--</div>
+        <div class="unit" data-i18n="livesensor.tidUnit">--</div>
+
+        <div class="label" data-i18n="livesensor.last">Last</div>
+        <div class="value" id="last">--</div>
+        <div class="unit" data-i18n="livesensor.lastUnit">--</div>
+
+        <div class="label" data-i18n="livesensor.setning">Setning</div>
+        <div class="value" id="setning">--</div>
+        <div class="unit" data-i18n="livesensor.setningUnit">--</div>
+      </div>
+    </div>
         `;
   }
 
