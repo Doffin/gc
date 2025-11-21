@@ -21,19 +21,21 @@ baseStyles.replaceSync(`
     :host([mode="dark"]) {
         color: #eaeaea;
         background-color: #1e1e1e;
-        border: 1px solid #333;
     }
 
     :host([mode="light"]) {
         color: #111;
         background-color: #fff;
-        border: 1px solid #ccc;
-        }
+    }
 
     /* Felles CSS-variabler for alle komponenter */
     :host {
         --panel-radius: 8px;
         --panel-padding: 12px;
+        --panel-shadow-light: rgba(0, 0, 0, 0.1);
+        --panel-shadow-dark: rgba(0, 0, 0, 0.5);            
+        --panel-border-light: #ddd;
+        --panel-border-dark: #a00;
         --panel-bg-light: #f7f7f7;
         --panel-bg-dark: #2a2a2a;
     }
