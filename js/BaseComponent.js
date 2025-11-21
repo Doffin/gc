@@ -21,12 +21,14 @@ baseStyles.replaceSync(`
     :host([mode="dark"]) {
         color: #eaeaea;
         background-color: #1e1e1e;
+        border: 1px solid #333;
     }
 
     :host([mode="light"]) {
         color: #111;
         background-color: #fff;
-    }
+        border: 1px solid #ccc;
+        }
 
     /* Felles CSS-variabler for alle komponenter */
     :host {
