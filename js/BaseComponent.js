@@ -22,6 +22,8 @@ baseStyles.replaceSync(`
         color: #eaeaea;
         background-color: #1e1e1e;
         border: 1px solid #a00;
+       --tr-padding: 10px;
+       --tr-margin: 10px;
     }
 
     :host([mode="light"]) {
