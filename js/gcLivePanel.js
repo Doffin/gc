@@ -28,7 +28,6 @@ class gcLivePanel extends HTMLElement {
         :host([mode="dark"]) .panel {
           background: #1f1f1f;
           color: #eaeaea;
-          border-color: #444444;
           border: 1px solid #444444;
         }
 
@@ -62,14 +61,27 @@ class gcLivePanel extends HTMLElement {
   }
 
   connectedCallback() {
+    // Auto-follow system theme
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    this.setAttribute("mode", media.matches ? "dark" : "light");
 
+    this._themeListener = (e) => {
+      this.setAttribute("mode", e.matches ? "dark" : "light");
+    };
+    media.addEventListener("change", this._themeListener);
   }
 
+  disconnectedCallback() {
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    if (this._themeListener) {
+      media.removeEventListener("change", this._themeListener);
+    }
+  }
   /** Update sensor values */
   update(data) {
     for (const [key, value] of Object.entries(data)) {
       let prop = this.shadowRoot.getElementById(key);
-      if (prop) 
+      if (prop)
         prop.textContent = `${value}`;
     }
   }
@@ -82,13 +94,22 @@ class gcLivePanel extends HTMLElement {
 
   updateLanguage(currentLanguageData) {
     this.shadowRoot.querySelectorAll("[data-i18n]").forEach(el => {
-        const key = el.getAttribute("data-i18n");
-        let value = resolveKey(currentLanguageData, key);
-        if (value) {
-            el.textContent = interpolate(value, currentVariables);
-        }
+      const key = el.getAttribute("data-i18n");
+      let value = resolveKey(currentLanguageData, key);
+      if (value) {
+        el.textContent = interpolate(value, currentVariables);
+      }
     });
   }
+
+resolveKey(obj, key) {
+    return key.split(".").reduce((o, k) => (o ? o[k] : null), obj);
+}
+
+interpolate(text, vars = {}) {
+    return text.replace(/\{\{(.*?)\}\}/g, (_, k) => vars[k.trim()] ?? "");
+}
+
 }
 
 customElements.define("gc-live-panel", gcLivePanel);
