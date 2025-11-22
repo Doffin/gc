@@ -23,7 +23,14 @@ baseStyles.replaceSync(`
         background-color: #1e1e1e;
         border-radius: 8px;
         border: 1px solid #444;
-    }
+    } 
+    
+    :host([mode="dark"]) .panel {
+        border-radius: var(--panel-radius);
+        padding: var(--panel-padding);
+        background-color: var(--panel-bg-dark);
+        }
+
 
     :host([mode="light"]) {
         color: #111;
@@ -32,17 +39,18 @@ baseStyles.replaceSync(`
         border: 1px solid #ccc;
     }
 
+    :host([mode="light"]) .panel {
+        border-radius: var(--panel-radius);
+        padding: var(--panel-padding);
+        background-color: var(--panel-bg-light);
+    }
+
     /* Felles CSS-variabler for alle komponenter */
     :host {
         --panel-radius: 8px;
         --panel-padding: 12px;
         --panel-bg-light: #f7f7f7;
         --panel-bg-dark: #2a2a2a;
-    }
-    .panel {
-        border-radius: var(--panel-radius);
-        padding: var(--panel-padding);
-        background-color: var(--panel-bg-dark);
     }
 
 `);

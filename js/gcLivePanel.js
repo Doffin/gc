@@ -1,5 +1,5 @@
 
-import { BaseComponent } from "./BaseComponent.js";
+import { BaseComponent, resolveKey } from "./BaseComponent.js";
 
 class gcLivePanel extends BaseComponent {
 
@@ -13,6 +13,7 @@ class gcLivePanel extends BaseComponent {
         width: 100%;
         align-items: start;
         padding-top: 6px;
+        min-width: 320px;
       }
 
       .sensor-grid {
@@ -20,6 +21,7 @@ class gcLivePanel extends BaseComponent {
         grid-template-columns: 1fr;
         gap: 8px;
         width: 100%;
+        min-width: 200px;
       }
 
       .sensor {
@@ -56,10 +58,24 @@ class gcLivePanel extends BaseComponent {
         margin-left: 4px;
       }
 
+      /* Ensure the graph column has a minimum width so layout can't shrink below chart */
+      .graph-slot {
+        min-width: 320px;
+        min-height: 180px;
+      }
+
+      /* Combined content should have at least sensor + graph minimum widths */
+      .content-grid {
+        min-width: 540px;
+      }
+
       @media (max-width: 600px) {
         .content-grid {
           grid-template-columns: 1fr;
+          min-width: unset;
         }
+        .graph-slot { min-width: unset; }
+        .sensor-grid { min-width: unset; }
       }
     </style>
 
