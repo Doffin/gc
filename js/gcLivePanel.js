@@ -71,7 +71,7 @@ class gcLivePanel extends BaseComponent {
 
       @media (max-width: 600px) {
         .content-grid {
-          grid-template-columns: 1fr;
+          grid-template-columns: 1fr 1fr;
           min-width: unset;
         }
         .graph-slot { min-width: unset; }
