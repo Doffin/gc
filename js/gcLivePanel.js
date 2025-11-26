@@ -201,6 +201,14 @@ class gcLivePanel extends BaseComponent {
           this.initializeDataset("Belastning1", "phase1");
           this.initializeDataset("Oppslepp", "phase2");
           this.initializeDataset("Belastning2", "phase3");
+          // Use human-friendly display labels for legend immediately
+          this._chart.data.datasets.forEach(ds => {
+            if (ds.displayLabel) ds.label = ds.displayLabel;
+          });
+
+          // If language data is already available, apply localized labels
+          if (this._langData) this.updateLanguage(this._langData);
+
           this._chart.update();
 
         } catch (e) {
@@ -215,6 +223,12 @@ class gcLivePanel extends BaseComponent {
         initChart();
       }
     }
+
+    // Listen for global language change events (dispatched by languageLoader)
+    this._gcLangHandler = (e) => {
+      if (e?.detail?.languageData) this.updateLanguage(e.detail.languageData);
+    };
+    window.addEventListener('gc-language-changed', this._gcLangHandler);
   }
 
   disconnectedCallback() {
@@ -222,6 +236,7 @@ class gcLivePanel extends BaseComponent {
       try { this._chart.destroy(); } catch (e) {}
       this._chart = null;
     }
+    if (this._gcLangHandler) window.removeEventListener('gc-language-changed', this._gcLangHandler);
     if (super.disconnectedCallback) super.disconnectedCallback();
   }
 
@@ -232,26 +247,40 @@ class gcLivePanel extends BaseComponent {
       chart.options.plugins.title.text = resolveKey(languageData, "content.graphTitle");
       chart.options.scales.x.title.text = resolveKey(languageData, "content.xAxisTitle");
       chart.options.scales.y.title.text = resolveKey(languageData, "content.yAxisTitle");
-      chart.data.datasets[0].label      = resolveKey(languageData, "content.phase1Label");
-      chart.data.datasets[1].label      = resolveKey(languageData, "content.phase2Label");
-      chart.data.datasets[2].label      = resolveKey(languageData, "content.phase3Label");
+      // Update dataset labels (legend) using phase keys -> i18n mapping when available
+      const phaseLabelMap = {
+        'phase1': resolveKey(languageData, 'content.phase1Label'),
+        'phase2': resolveKey(languageData, 'content.phase2Label'),
+        'phase3': resolveKey(languageData, 'content.phase3Label')
+      };
+
+      chart.data.datasets.forEach(ds => {
+        if (ds.phaseKey && phaseLabelMap[ds.phaseKey]) {
+          ds.label = phaseLabelMap[ds.phaseKey];
+        }
+      });
+
       chart.update();
     }
   }
 
-  initializeDataset(phaseLabel, phaseName) {
+  initializeDataset(phaseLabel, phaseNr) {
     const newDataset = {
-      label: phaseLabel,
-       data: [],
-              borderColor: this._phaseColors[phaseName].border,
-              backgroundColor: this._phaseColors[phaseName].bg,
-              tension: 0.3,
-              fill: false,
-              pointRadius: 4,
-              borderWidth: 2,
-              pointStyle: 'circle',
-              showLine: true,
-            };
+      // use phase key as dataset label so we can address datasets by phase value
+      label: phaseNr,
+      // human readable label saved separately (not used for lookup)
+      displayLabel: phaseLabel,
+      phaseKey: phaseNr,
+      data: [],
+      borderColor: this._phaseColors[phaseNr].border,
+      backgroundColor: this._phaseColors[phaseNr].bg,
+      tension: 0.3,
+      fill: false,
+      pointRadius: 4,
+      borderWidth: 2,
+      pointStyle: 'circle',
+      showLine: true,
+    };
     this._chart.data.datasets.push(newDataset);
   }
 
@@ -286,7 +315,7 @@ class gcLivePanel extends BaseComponent {
 
     // Track current phase
     if (data.phase) {
-      this._currentPhase = parseInt(data.phase);
+      this._currentPhase = data.phase;
     }
 
     // Only push to chart if type === "gc_save"
@@ -296,20 +325,21 @@ class gcLivePanel extends BaseComponent {
       try {
         const chart = this._chart;
         const phase = this._currentPhase;
-        
-        let newObservation = {
-        x: this._pendingLast,
-        y: this._pendingSetning
-        };
-        chart.data.datasets[phase].data.push(newObservation);
 
-        // trim to maxPoints (apply to all datasets)
-        const max = this._maxPoints || 50;
-        while (chart.data.labels.length > max) {
-          chart.data.labels.shift();
-          chart.data.datasets.forEach(ds => {
-            if (ds.data.length > 0) ds.data.shift();
-          });
+        let newObservation = { x: Number(this._pendingLast), y: this._pendingSetning };
+
+        // Determine target dataset index: allow numeric phase (0/1/2) or phase key string ('phase1')
+        let targetIndex = -1;
+        if (/^\d+$/.test(String(phase))) {
+          targetIndex = Number(phase);
+        } else {
+          targetIndex = chart.data.datasets.findIndex(ds => ds.phaseKey === phase || ds.label === phase);
+        }
+
+        if (targetIndex === -1 || !chart.data.datasets[targetIndex]) {
+          console.warn('Unknown phase for charting:', phase);
+        } else {
+          chart.data.datasets[targetIndex].data.push(newObservation);
         }
         chart.update('none');
       } catch (e) {

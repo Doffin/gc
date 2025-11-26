@@ -1,6 +1,7 @@
 const langSelect = document.getElementById("language-select");
 
 let currentLanguageData = {};
+let currentLang = 'norsk';
 let currentVariables = {
     name: "Testbruker",
     count: 3
@@ -31,10 +32,17 @@ function updateText() {
     let live = document.getElementById("live");
     if(live!=null) live.updateLanguage(currentLanguageData);
     w3.includeHTML();
+    // Broadcast a global event so components can listen for language changes
+    try {
+        window.dispatchEvent(new CustomEvent('gc-language-changed', { detail: { languageData: currentLanguageData, lang: currentLang } }));
+    } catch (e) {
+        console.warn('Failed to dispatch language change event', e);
+    }
 }
 
 // Laster språkfil
 async function loadLanguage(lang) {
+    currentLang = lang;
     const response = await fetch(`lang/${lang}.json`);
     currentLanguageData = await response.json();
     updateText();
