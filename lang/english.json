@@ -12,7 +12,10 @@
         "yAxisTitle": "Displacement mm",
         "timeLabel": "Time [hh:mm:ss]",
         "loadLabel": "Load [kN/m2]",
-        "displacementLabel":"Displacement [mm]"
+        "displacementLabel":"Displacement [mm]",
+        "phase1Label": "Load1",
+        "phase2Label": "Unloading",
+        "phase3Label": "Load2"
     },
     "livesensor": {
         "title": "Live Sensor Data",

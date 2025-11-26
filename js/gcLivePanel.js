@@ -8,7 +8,7 @@ class gcLivePanel extends BaseComponent {
     <style>
       .content-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 3fr;
         gap: 12px;
         width: 100%;
         align-items: start;
@@ -61,7 +61,7 @@ class gcLivePanel extends BaseComponent {
       /* Ensure the graph column has a minimum width so layout can't shrink below chart */
       .graph-slot {
         min-width: 320px;
-        min-height: 180px;
+        min-height: 400px;
       }
 
       /* Combined content should have at least sensor + graph minimum widths */
@@ -120,7 +120,7 @@ class gcLivePanel extends BaseComponent {
       const canvas = document.createElement('canvas');
       canvas.id = 'gc-chart';
       canvas.style.width = '100%';
-      canvas.style.height = '250px';
+      canvas.style.height = '400px';
       graphSlot.appendChild(canvas);
 
       // Initialize Chart if available
@@ -194,9 +194,9 @@ class gcLivePanel extends BaseComponent {
           this._maxPoints = 50;
           // color palette for phases
           this._phaseColors = {
-            'Belastning1': { border: '#007bff', bg: 'rgba(0,123,255,0.15)' },
-            'Oppslepp': { border: '#28a745', bg: 'rgba(40,167,69,0.15)' },
-            'Belastning2': { border: '#ffc107', bg: 'rgba(255,193,7,0.15)' }
+            'phase1': { border: '#ff0055', bg: 'rgba(0,123,255,0.15)' },
+            'phase2': { border: '#777777', bg: 'rgba(40,167,69,0.15)' },
+            'phase3': { border: '#28a745', bg: 'rgba(255,193,7,0.15)' }
           };
         } catch (e) {
           console.warn('Chart initialization failed:', e);
@@ -227,9 +227,27 @@ class gcLivePanel extends BaseComponent {
       chart.options.plugins.title.text = resolveKey(languageData, "content.graphTitle");
       chart.options.scales.x.title.text = resolveKey(languageData, "content.xAxisTitle");
       chart.options.scales.y.title.text = resolveKey(languageData, "content.yAxisTitle");
-//      chart.data.datasets[0].label = resolveKey(languageData, "content.displacementLabel");
+      chart.data.datasets[0].label      = resolveKey(languageData, "content.phase1Label");
+      chart.data.datasets[1].label      = resolveKey(languageData, "content.phase2Label");
+      chart.data.datasets[2].label      = resolveKey(languageData, "content.phase3Label");
       chart.update();
     }
+  }
+
+  initializeDataset(phaseLabel, phaseName) {
+    const newDataset = {
+      label: phaseLabel,
+       data: [],
+              borderColor: _phaseColors[phaseName].border,
+              backgroundColor: _phaseColors[phaseName].bg,
+              tension: 0.3,
+              fill: false,
+              pointRadius: 4,
+              borderWidth: 2,
+              pointStyle: 'circle',
+              showLine: true,
+            };
+    chart.data.datasets.push(newDataset);
   }
 
   update(data) {
@@ -252,6 +270,9 @@ class gcLivePanel extends BaseComponent {
       if (this._chart) {
         this._chart.data.labels = [];
         this._chart.data.datasets = [];
+        initializeDataset("Belastning1", "phase1");
+        initializeDataset("Oppslepp", "phase2");
+        initializeDataset("Belastning2", "phase3");
         this._chart.update();
       }
       this._currentPhase = null;
@@ -290,7 +311,7 @@ class gcLivePanel extends BaseComponent {
               fill: false,
               pointRadius: 4,
               borderWidth: 2,
-              pointStyle: 'cross',
+              pointStyle: 'circle',
               showLine: true,
             };
           datasetIndex = chart.data.datasets.length;

@@ -12,7 +12,10 @@
         "yAxisTitle": "Forskyvning mm",
         "timeLabel": "Tid hh:mm:ss",
         "loadLabel": "Last kN/m²",
-        "displacementLabel":"Setning mm"
+        "displacementLabel":"Setning mm",
+        "phase1Label": "Belastning1",
+        "phase2Label": "Oppslepp",  
+        "phase3Label": "Belastning2"
     },
     "livesensor": {
         "title": "Siste sensormålinger",

@@ -12,7 +12,10 @@
         "yAxisTitle": "Przemieszczenie [mm]",
         "timeLabel": "Czas [hh:mm:ss]",
         "loadLabel": "Obciążenie [kN/m2]",
-        "displacementLabel":"Przemieszczenie [mm]"
+        "displacementLabel":"Przemieszczenie [mm]",
+        "phase1Label": "Obciążenie1",
+        "phase2Label": "Uwolnienie",
+        "phase3Label": "Obciążenie2"
     },
     "livesensor": {
         "title": "Dane z czujników na żywo",
