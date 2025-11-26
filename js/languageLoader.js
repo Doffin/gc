@@ -27,7 +27,9 @@ function updateText() {
             el.textContent = interpolate(value, currentVariables);
         }
     });
-    document.getElementById("live").updateLanguage(currentLanguageData);
+    // Oppdaterer også web component
+    let live = document.getElementById("live");
+    if(live!=null) live.updateLanguage(currentLanguageData);
     w3.includeHTML();
 }
 

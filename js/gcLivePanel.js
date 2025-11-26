@@ -227,7 +227,7 @@ class gcLivePanel extends BaseComponent {
       chart.options.plugins.title.text = resolveKey(languageData, "content.graphTitle");
       chart.options.scales.x.title.text = resolveKey(languageData, "content.xAxisTitle");
       chart.options.scales.y.title.text = resolveKey(languageData, "content.yAxisTitle");
-      chart.data.datasets[0].label = resolveKey(languageData, "content.displacementLabel");
+//      chart.data.datasets[0].label = resolveKey(languageData, "content.displacementLabel");
       chart.update();
     }
   }
@@ -288,9 +288,10 @@ class gcLivePanel extends BaseComponent {
               backgroundColor: colors.bg,
               tension: 0.3,
               fill: false,
-              pointRadius: 0,
+              pointRadius: 4,
               borderWidth: 2,
-              pointStyle: 'line'
+              pointStyle: 'cross',
+              showLine: true,
             };
           datasetIndex = chart.data.datasets.length;
           chart.data.datasets.push(newDataset);
