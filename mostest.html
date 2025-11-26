@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+<body>
+  <h3>MQTT subscribe demo</h3>
+  <pre id="out"></pre>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.3/mqttws31.min.js"></script>
+  <script>
+    const out = document.getElementById('out');
+    const client = new Paho.MQTT.Client('test.mosquitto.org', 8081, 'test_' + Math.random().toString(16).slice(2));
+    client.onMessageArrived = msg => out.textContent += msg.destinationName + ' : ' + msg.payloadString + '\n';
+    client.connect({
+      onSuccess: () => { out.textContent += 'Connected\n'; client.subscribe('gc/data'); },
+      useSSL: true
+    });
+  </script>
+</body>
+</html>
