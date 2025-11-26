@@ -198,6 +198,11 @@ class gcLivePanel extends BaseComponent {
             'phase2': { border: '#777777', bg: 'rgba(40,167,69,0.15)' },
             'phase3': { border: '#28a745', bg: 'rgba(255,193,7,0.15)' }
           };
+          this.initializeDataset("Belastning1", "phase1");
+          this.initializeDataset("Oppslepp", "phase2");
+          this.initializeDataset("Belastning2", "phase3");
+          this._chart.update();
+
         } catch (e) {
           console.warn('Chart initialization failed:', e);
         }
@@ -238,8 +243,8 @@ class gcLivePanel extends BaseComponent {
     const newDataset = {
       label: phaseLabel,
        data: [],
-              borderColor: _phaseColors[phaseName].border,
-              backgroundColor: _phaseColors[phaseName].bg,
+              borderColor: this._phaseColors[phaseName].border,
+              backgroundColor: this._phaseColors[phaseName].bg,
               tension: 0.3,
               fill: false,
               pointRadius: 4,
@@ -247,7 +252,7 @@ class gcLivePanel extends BaseComponent {
               pointStyle: 'circle',
               showLine: true,
             };
-    chart.data.datasets.push(newDataset);
+    this._chart.data.datasets.push(newDataset);
   }
 
   update(data) {
@@ -270,23 +275,18 @@ class gcLivePanel extends BaseComponent {
       if (this._chart) {
         this._chart.data.labels = [];
         this._chart.data.datasets = [];
-        initializeDataset("Belastning1", "phase1");
-        initializeDataset("Oppslepp", "phase2");
-        initializeDataset("Belastning2", "phase3");
+        this.initializeDataset("Belastning1", "phase1");
+        this.initializeDataset("Oppslepp", "phase2");
+        this.initializeDataset("Belastning2", "phase3");
         this._chart.update();
       }
-      this._currentPhase = null;
-      return;
-    }
-    // Handle phase finish (just a temporary hack, ignore)
-    if (data.phase === 'Finish') {
       this._currentPhase = null;
       return;
     }
 
     // Track current phase
     if (data.phase) {
-      this._currentPhase = data.phase;
+      this._currentPhase = parseInt(data.phase);
     }
 
     // Only push to chart if type === "gc_save"
@@ -297,34 +297,11 @@ class gcLivePanel extends BaseComponent {
         const chart = this._chart;
         const phase = this._currentPhase;
         
-        // Find or create dataset for this phase
-        let datasetIndex = chart.data.datasets.findIndex(ds => ds.label === phase);
-        if (datasetIndex === -1) {
-          // Create new dataset for this phase
-          const colors = this._phaseColors[phase] || { border: '#999', bg: 'rgba(153,153,153,0.15)' };
-            const newDataset = {
-              label: phase,
-              data: [],
-              borderColor: colors.border,
-              backgroundColor: colors.bg,
-              tension: 0.3,
-              fill: false,
-              pointRadius: 4,
-              borderWidth: 2,
-              pointStyle: 'circle',
-              showLine: true,
-            };
-          datasetIndex = chart.data.datasets.length;
-          chart.data.datasets.push(newDataset);
-        }
-
-        // Push point to the appropriate dataset
-//        chart.data.labels.push(String(this._pendingLast));
         let newObservation = {
         x: this._pendingLast,
         y: this._pendingSetning
         };
-        chart.data.datasets[datasetIndex].data.push(newObservation);
+        chart.data.datasets[phase].data.push(newObservation);
 
         // trim to maxPoints (apply to all datasets)
         const max = this._maxPoints || 50;
