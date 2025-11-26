@@ -2,10 +2,6 @@ const langSelect = document.getElementById("language-select");
 
 let currentLanguageData = {};
 let currentLang = 'norsk';
-let currentVariables = {
-    name: "Testbruker",
-    count: 3
-};
 
 // Interpolerer {variable} i teksten
 function interpolate(text, vars) {
@@ -47,13 +43,6 @@ async function loadLanguage(lang) {
     currentLanguageData = await response.json();
     updateText();
 }
-
-// Demo: oppdater variabler dynamisk
-document.getElementById("updateVars").addEventListener("click", () => {
-    currentVariables.name = document.getElementById("nameInput").value;
-    //currentVariables.count = parseInt(document.getElementById("countInput").value);
-    updateText();
-});
 
 // Init
 loadLanguage("norsk");
