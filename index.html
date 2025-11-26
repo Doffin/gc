@@ -19,7 +19,7 @@
 </head>
 
 <body class="w3-container">
-    <p id="versionNr">Version 1.0.51</p>
+    <p id="versionNr">Version 1.0.52</p>
     <select id="language-select">
         <option value="norsk">Norsk</option>
         <option value="english">English</option>
@@ -115,7 +115,7 @@
             ws.onmessage = function (event) {
                 try {
                     const msg = JSON.parse(event.data);
-                    if(msg.type && msg.type === 'ptm_live') {
+                    if(msg.type && msg.type.startsWith("gc_")) {
                         live.update(msg);
                     }
                     return;

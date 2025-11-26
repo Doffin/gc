@@ -129,17 +129,10 @@ class gcLivePanel extends BaseComponent {
           const ctx = canvas.getContext('2d');
           // initialize empty chart; we'll push points (x=last, y=setning)
           this._chart = new Chart(ctx, {
-            type: 'line',
+            type: 'scatter',
             data: {
               labels: [],
-              datasets: [{
-                label: 'Setning',
-                data: [],
-                borderColor: '#007bff',
-                backgroundColor: 'rgba(0,123,255,0.15)',
-                tension: 0.3,
-                fill: false,
-              }]
+              datasets: []
             },
             options: {
               responsive: true,
@@ -150,12 +143,22 @@ class gcLivePanel extends BaseComponent {
                   color: '#fff', 
                   display: true
                 },
-                legend: { display: false } 
+                legend: { 
+                  display: true,
+                  labels: {
+                    usePointStyle: true,
+                    // make the point style look like a short line
+                    pointStyle: 'line',
+                    boxWidth: 40
+                  }
+                } 
               },
               scales: { 
                 x: { 
                   display: true,
                   color: '#fff',
+                  min: 0,
+                  max: 600,
                   title: {
                     display: true,
                     text: 'Last',
@@ -168,9 +171,11 @@ class gcLivePanel extends BaseComponent {
                 y:{
                   display: true,
                   axis_color: '#fff',
+                  min: -6,
+                  max: 0,
                   title: {
                     display: true,   
-                    text: 'Setning',
+                    text: 'Setning (mm)',
                     color: '#fff'
                   },   
                   grid: {
@@ -182,10 +187,17 @@ class gcLivePanel extends BaseComponent {
             }
           } 
             );
-          // buffer for partial updates
+          // buffer for partial updates and phase tracking
           this._pendingLast = null;
           this._pendingSetning = null;
+          this._currentPhase = null;
           this._maxPoints = 50;
+          // color palette for phases
+          this._phaseColors = {
+            'Belastning1': { border: '#007bff', bg: 'rgba(0,123,255,0.15)' },
+            'Oppslepp': { border: '#28a745', bg: 'rgba(40,167,69,0.15)' },
+            'Belastning2': { border: '#ffc107', bg: 'rgba(255,193,7,0.15)' }
+          };
         } catch (e) {
           console.warn('Chart initialization failed:', e);
         }
@@ -221,7 +233,7 @@ class gcLivePanel extends BaseComponent {
   }
 
   update(data) {
-    // existing DOM updates
+    // Always update DOM values
     for (const [key, value] of Object.entries(data)) {
       let prop = this.shadowRoot.getElementById(key);
       if (prop)
@@ -235,18 +247,71 @@ class gcLivePanel extends BaseComponent {
       }
     }
 
-    // If chart exists and we have both last and setning, push a new point
-    if (this._chart && this._pendingLast != null && this._pendingSetning != null) {
+    // Handle resets
+    if (data.type === 'gc_reset') {
+      if (this._chart) {
+        this._chart.data.labels = [];
+        this._chart.data.datasets = [];
+        this._chart.update();
+      }
+      this._currentPhase = null;
+      return;
+    }
+    // Handle phase finish (just a temporary hack, ignore)
+    if (data.phase === 'Finish') {
+      this._currentPhase = null;
+      return;
+    }
+
+    // Track current phase
+    if (data.phase) {
+      this._currentPhase = data.phase;
+    }
+
+    // Only push to chart if type === "gc_save"
+    const shouldChart = data.type === 'gc_save';
+    
+    if (shouldChart && this._chart && this._pendingLast != null && this._pendingSetning != null && this._currentPhase) {
       try {
         const chart = this._chart;
-        chart.data.labels.push(String(this._pendingLast));
-        chart.data.datasets[0].data.push(this._pendingSetning);
+        const phase = this._currentPhase;
+        
+        // Find or create dataset for this phase
+        let datasetIndex = chart.data.datasets.findIndex(ds => ds.label === phase);
+        if (datasetIndex === -1) {
+          // Create new dataset for this phase
+          const colors = this._phaseColors[phase] || { border: '#999', bg: 'rgba(153,153,153,0.15)' };
+            const newDataset = {
+              label: phase,
+              data: [],
+              borderColor: colors.border,
+              backgroundColor: colors.bg,
+              tension: 0.3,
+              fill: false,
+              pointRadius: 0,
+              borderWidth: 2,
+              pointStyle: 'line'
+            };
+          datasetIndex = chart.data.datasets.length;
+          chart.data.datasets.push(newDataset);
+        }
 
-        // trim to maxPoints
+        // Push point to the appropriate dataset
+//        chart.data.labels.push(String(this._pendingLast));
+        let newObservation = {
+        x: this._pendingLast,
+        y: this._pendingSetning
+        };
+        chart.data.datasets[datasetIndex].data.push(newObservation);
+
+        // trim to maxPoints (apply to all datasets)
         const max = this._maxPoints || 50;
-        while (chart.data.labels.length > max) chart.data.labels.shift();
-        while (chart.data.datasets[0].data.length > max) chart.data.datasets[0].data.shift();
-
+        while (chart.data.labels.length > max) {
+          chart.data.labels.shift();
+          chart.data.datasets.forEach(ds => {
+            if (ds.data.length > 0) ds.data.shift();
+          });
+        }
         chart.update('none');
       } catch (e) {
         console.warn('Failed to push point to chart:', e);
