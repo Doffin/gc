@@ -4,9 +4,16 @@
         "about": "O",
         "contact": "Kontakt"
     },
-    "content": {
-        "title": "Powitanie, {name}!",
-        "body": "To prosta strona HTML5 z wyborem języka na podstawie JSON.",
+    "livesensor": {
+        "title": "Dane z czujników na żywo",
+        "tid":     "Czas",
+        "last":    "Obciążenie",
+        "setning": "Przemieszczenie",
+        "tidUnit":     "[hh:mm:ss]",
+        "lastUnit": "kN/m²",       
+        "setningUnit": "mm"
+    },
+    "chart": {
         "graphTitle": "Przemieszczenie jako funkcja obciążenia",
         "xAxisTitle": "Obciążenie [kN/m2]",
         "yAxisTitle": "Przemieszczenie [mm]",
@@ -16,15 +23,7 @@
         "phase1Label": "Obciążenie1",
         "phase2Label": "Uwolnienie",
         "phase3Label": "Obciążenie2"
-    },
-    "livesensor": {
-        "title": "Dane z czujników na żywo",
-        "tid":     "Czas",
-        "last":    "Obciążenie",
-        "setning": "Przemieszczenie",
-        "tidUnit":     "[hh:mm:ss]",
-        "lastUnit": "kN/m²",       
-        "setningUnit": "mm"
-    }   
+    }
+   
 
 }

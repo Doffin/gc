@@ -1,25 +1,25 @@
 {
     "menu": {
-        "home": "Hjem",
+        "home": "Hem",
         "about": "Om",
         "contact": "Kontakt"
     },
     "livesensor": {
-        "title": "Siste sensormålinger",
+        "title": "Senaste sensormätningar",
         "tid":     "Tid",
-        "last":    "Last",    
-        "setning": "Setning",
+        "last":    "Belastning",
+        "setning": "Förskjutning",
         "tidUnit": "hh:mm:ss",
         "lastUnit": "kN/m²",       
         "setningUnit": "mm"
     },   
     "chart": {
-        "graphTitle": "Forskyvning som funksjon av last",
-        "xAxisTitle": "Last kN/m²",
-        "yAxisTitle": "Forskyvning mm",
+        "graphTitle": "Förskjutning som funktion av belastning",
+        "xAxisTitle": "Belastning kN/m²",
+        "yAxisTitle": "Förskjutning mm",
         "timeLabel": "Tid hh:mm:ss",
-        "loadLabel": "Last kN/m²",
-        "displacementLabel":"Setning mm",
+        "loadLabel": "Belastning kN/m²",
+        "displacementLabel":"Förskjutning mm",
         "phase1Label": "Belastning1",
         "phase2Label": "Oppslepp",  
         "phase3Label": "Belastning2"

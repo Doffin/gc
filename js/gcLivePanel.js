@@ -158,10 +158,10 @@ class gcLivePanel extends BaseComponent {
                   display: true,
                   color: '#fff',
                   min: 0,
-                  max: 700,
+                  max: 800,
                   title: {
                     display: true,
-                    text: 'Last',
+                    text: 'Belastning',
                     color: '#fff'
                   },
                   grid: {
@@ -244,14 +244,14 @@ class gcLivePanel extends BaseComponent {
     this.setLanguageData(languageData);
     if (this._chart) {
       const chart = this._chart;
-      chart.options.plugins.title.text = resolveKey(languageData, "content.graphTitle");
-      chart.options.scales.x.title.text = resolveKey(languageData, "content.xAxisTitle");
-      chart.options.scales.y.title.text = resolveKey(languageData, "content.yAxisTitle");
+      chart.options.plugins.title.text = resolveKey(languageData, "chart.graphTitle");
+      chart.options.scales.x.title.text = resolveKey(languageData, "chart.xAxisTitle");
+      chart.options.scales.y.title.text = resolveKey(languageData, "chart.yAxisTitle");
       // Update dataset labels (legend) using phase keys -> i18n mapping when available
       const phaseLabelMap = {
-        'phase1': resolveKey(languageData, 'content.phase1Label'),
-        'phase2': resolveKey(languageData, 'content.phase2Label'),
-        'phase3': resolveKey(languageData, 'content.phase3Label')
+        'phase1': resolveKey(languageData, 'chart.phase1Label'),
+        'phase2': resolveKey(languageData, 'chart.phase2Label'),
+        'phase3': resolveKey(languageData, 'chart.phase3Label')
       };
 
       chart.data.datasets.forEach(ds => {

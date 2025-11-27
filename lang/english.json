@@ -4,9 +4,15 @@
         "about": "About",
         "contact": "Contact"
     },
-    "content": {
-        "title": "Welcome, {name}!",
-        "body": "This is a simple HTML5 page with language selection based on JSON.",
+    "livesensor": {
+        "title": "Live Sensor Data",
+        "tid":     "Time",
+        "last":    "Load",    
+        "setning": "Displacement",
+        "lastUnit": "kN/m²",       
+        "setningUnit": "mm"
+    },
+    "chart": {
         "graphTitle": "Displacement as function of load",
         "xAxisTitle": "Load kN/m²",
         "yAxisTitle": "Displacement mm",
@@ -16,13 +22,5 @@
         "phase1Label": "Load1",
         "phase2Label": "Unloading",
         "phase3Label": "Load2"
-    },
-    "livesensor": {
-        "title": "Live Sensor Data",
-        "tid":     "Time",
-        "last":    "Load",    
-        "setning": "Displacement",
-        "lastUnit": "kN/m²",       
-        "setningUnit": "mm"
     }   
 }

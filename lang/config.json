@@ -12,6 +12,11 @@
       "file": "english.json"
     },
     {
+      "code": "svensk",
+      "displayName": "Svensk",
+      "file": "svensk.json"
+    },
+    {
       "code": "polish",
       "displayName": "Polski",
       "file": "polish.json"
