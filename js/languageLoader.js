@@ -2,6 +2,7 @@ const langSelect = document.getElementById("language-select");
 
 let currentLanguageData = {};
 let currentLang = 'norsk';
+let langConfig = null;
 
 // Interpolerer {variable} i teksten
 function interpolate(text, vars) {
@@ -44,8 +45,37 @@ async function loadLanguage(lang) {
     updateText();
 }
 
+// Populerer språk-dropdown fra config
+async function populateLanguageSelect() {
+    try {
+        const response = await fetch('lang/config.json');
+        langConfig = await response.json();
+        
+        // Fjern eksisterende options
+        langSelect.innerHTML = '';
+        
+        // Legg til options fra config
+        langConfig.languages.forEach(lang => {
+            const option = document.createElement('option');
+            option.value = lang.code;
+            option.textContent = lang.displayName;
+            langSelect.appendChild(option);
+        });
+        
+        // Sett default språk
+        const defaultLang = langConfig.defaultLanguage || 'norsk';
+        langSelect.value = defaultLang;
+        await loadLanguage(defaultLang);
+        
+    } catch (error) {
+        console.error('Failed to load language config:', error);
+        // Fallback til norsk hvis config ikke kan lastes
+        await loadLanguage('norsk');
+    }
+}
+
 // Init
-loadLanguage("norsk");
+populateLanguageSelect();
 
 langSelect.addEventListener("change", () => {
     loadLanguage(langSelect.value);

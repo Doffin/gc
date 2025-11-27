@@ -1,0 +1,20 @@
+{
+  "defaultLanguage": "norsk",
+  "languages": [
+    {
+      "code": "norsk",
+      "displayName": "Norsk",
+      "file": "norsk.json"
+    },
+    {
+      "code": "english",
+      "displayName": "English",
+      "file": "english.json"
+    },
+    {
+      "code": "polish",
+      "displayName": "Polski",
+      "file": "polish.json"
+    }
+  ]
+}
