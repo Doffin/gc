@@ -17,11 +17,12 @@
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script defer src="js/languageLoader.js"></script>
+    <script src="js/gcSetupPanel.js" type="module"></script>
     <script src="js/gcLivePanel.js" type="module"></script>
 </head>
 
 <body class="w3-container">
-    <p id="versionNr">Version 1.0.60</p>
+    <p id="versionNr">Version 1.0.61</p>
     <select id="language-select">
         <option value="norsk">Norsk</option>
         <option value="english">English</option>
@@ -30,24 +31,8 @@
     <button id="install_button" hidden>Install</button>
     <button onclick="toggleColorMode()">Toggle Dark Mode</button>
     <input type="button" id="clear-cache" value="Refresh" onclick="clearCache()" />
-    <br />
-    <label for="transport-select">Transport:</label>
-    <select id="transport-select" onchange="switchTransport(this.value)">
-        <option value="websocket">WebSocket (localhost:8080)</option>
-        <option value="mqtt">MQTT (Mosquitto)</option>
-    </select>
-    <span id="connection-status" style="margin-left: 10px; font-weight: bold;">● Offline</span>
-    <br />
-    <div id="mqtt-config" style="display: none; margin-top: 10px; padding: 10px; background-color: #f0f0f0; border-radius: 4px;">
-        <label for="mqtt-broker">MQTT Broker URL:</label>
-        <input type="text" id="mqtt-broker" value="broker.hivemq.com" style="width: 250px;" />
-        <label for="mqtt-port" style="margin-left: 20px;">Port:</label>
-        <input type="number" id="mqtt-port" value="8884" style="width: 80px;" />
-        <label for="mqtt-topic" style="margin-left: 20px;">Topic:</label>
-        <input type="text" id="mqtt-topic" value="gc/data" style="width: 200px;" />
-        <button onclick="applyMQTTConfig()" style="margin-left: 10px;">Apply & Reconnect</button>
-    </div>
-    <br />
+    <hr />
+    <gc-setup-panel id="setup"></gc-setup-panel>
     <hr />
     <gc-live-panel id="live"></gc-live-panel>
     <hr />
@@ -64,16 +49,21 @@
     <script>
         let mode = 'dark';
         const live = document.getElementById("live");
+        const setup = document.getElementById("setup");
         w3.includeHTML();
         
-        // Transport state
-        let ws = null;
-        let mqtt = null;
-        let currentTransport = 'websocket';
-        
         window.onload = function () {
-            initWebSocket();
             applyColorMode(mode);
+            
+            // Listen for messages from setup panel
+            setup.addEventListener('gc-message', (e) => {
+                onMessage(e.detail.message);
+            });
+            
+            // Listen for status messages from setup panel
+            setup.addEventListener('gc-status', (e) => {
+                showMessage(e.detail.text);
+            });
         };
 
         const key = 'vk_test_v1';
@@ -96,7 +86,8 @@
             mode = newMode;
             document.body.style.backgroundColor = mode === 'dark' ? '#121212' : '#ffffff';
             document.body.style.color = mode === 'dark' ? '#e0e0e0' : '#000000';
-            document.getElementById('live').setColorMode(mode);
+            live.setColorMode(mode);
+            setup.setColorMode(mode);
         }    
 
         function showMessage(message) {
@@ -105,18 +96,8 @@
             messages.innerHTML = `${message}`;
         }
 
-        function updateConnectionStatus(online, transport) {
-            const status = document.getElementById('connection-status');
-            if (!status) return;
-            const color = online ? 'green' : 'red';
-            const text = online ? '● Online' : '● Offline';
-            status.style.color = color;
-            status.textContent = `${text} (${transport})`;
-        }
-
-        function onMessage(msgData) {
+        function onMessage(msg) {
             try {
-                const msg = typeof msgData === 'string' ? JSON.parse(msgData) : msgData;
                 if(msg.type && msg.type.startsWith("gc_")) {
                     live.update(msg);
                     showMessage(`Received: ${msg.type} - phase: ${msg.phase}, last: ${msg.last}, setning: ${msg.setning}`);
@@ -126,122 +107,8 @@
             }
         }
 
-        function initWebSocket() {
-            if (ws) {
-                showMessage('WebSocket is already initialized.');
-                return;
-            }
-            ws = new WebSocket(`ws://localhost:8080`);
-            ws.onerror = function () {
-                showMessage('WebSocket error');
-                updateConnectionStatus(false, 'WebSocket');
-            };
-            ws.onopen = function () {
-                showMessage('WebSocket connection established');
-                updateConnectionStatus(true, 'WebSocket');
-            };
-            ws.onclose = function () {
-                showMessage('WebSocket connection closed');
-                updateConnectionStatus(false, 'WebSocket');
-                ws = null;
-            };
-            ws.onmessage = function (event) {
-                onMessage(event.data);
-            };
-        }
-
-        function initMQTT() {
-            if (mqtt) {
-                showMessage('MQTT is already initialized.');
-                return;
-            }
-
-            const brokerUrl = document.getElementById('mqtt-broker').value || 'broker.hivemq.com';
-            const brokerPort = parseInt(document.getElementById('mqtt-port').value) || 8884;
-            const topic = document.getElementById('mqtt-topic').value || 'gc/data';
-            const clientId = `gc_${Math.random().toString(16).substr(2, 9)}`;
-
-            mqtt = new Paho.MQTT.Client(brokerUrl, brokerPort, clientId);
-            mqtt.onConnectionLost = function (responseObject) {
-                showMessage('MQTT connection lost');
-                updateConnectionStatus(false, 'MQTT');
-            };
-            mqtt.onMessageArrived = function (message) {
-                onMessage(message.payloadString);
-            };
-
-            mqtt.connect({
-                onSuccess: function () {
-                    showMessage('MQTT connection established');
-                    updateConnectionStatus(true, 'MQTT');
-                    mqtt.subscribe(topic);
-                    showMessage(`Subscribed to topic: ${topic}`);
-                },
-                onFailure: function (error) {
-                    showMessage(`MQTT connection failed: ${error.errorMessage}`);
-                    updateConnectionStatus(false, 'MQTT');
-                },
-                useSSL: true,
-                cleanSession: true
-            });
-        }
-
-        function switchTransport(transport) {
-            currentTransport = transport;
-
-            if (transport === 'websocket') {
-                // Close MQTT if active
-                if (mqtt && mqtt.isConnected()) {
-                    mqtt.disconnect();
-                    mqtt = null;
-                }
-                // Init WebSocket if not already active
-                if (!ws || ws.readyState !== WebSocket.OPEN) {
-                    initWebSocket();
-                }
-                // Hide MQTT config
-                document.getElementById('mqtt-config').style.display = 'none';
-            } else if (transport === 'mqtt') {
-                // Close WebSocket if active
-                if (ws) {
-                    ws.close();
-                    ws = null;
-                }
-                // Show MQTT config
-                document.getElementById('mqtt-config').style.display = 'block';
-                // Init MQTT if not already active
-                if (!mqtt || !mqtt.isConnected()) {
-                    initMQTT();
-                }
-            }
-        }
-
-        function applyMQTTConfig() {
-            // Reconnect MQTT with new config
-            if (mqtt && mqtt.isConnected()) {
-                mqtt.disconnect();
-            }
-            mqtt = null;
-            if (currentTransport === 'mqtt') {
-                initMQTT();
-            }
-        }
-
         function sendRequest(msg) {
-            if (currentTransport === 'websocket' && ws && ws.readyState === WebSocket.OPEN) {
-                ws.send(msg);
-                setTimeout(function () {
-                    showMessage("...");
-                }, 2000);
-            } else if (currentTransport === 'mqtt' && mqtt && mqtt.isConnected()) {
-                const topic = 'gc/data';
-                const message = new Paho.MQTT.Message(msg);
-                message.destinationName = topic;
-                mqtt.send(message);
-                showMessage(`Published to ${topic}`);
-            } else {
-                showMessage(`Not connected via ${currentTransport}.`);
-            }
+            setup.sendMessage(msg);
         }
 
     </script>
