@@ -137,6 +137,12 @@ class gcSetupPanel extends BaseComponent {
     this._mqttConfig = this.shadowRoot.getElementById('mqtt-config');
     this._connectionStatus = this.shadowRoot.getElementById('connection-status');
     this._applyButton = this.shadowRoot.getElementById('apply-mqtt');
+    this._mqttBrokerInput = this.shadowRoot.getElementById('mqtt-broker');
+    this._mqttPortInput = this.shadowRoot.getElementById('mqtt-port');
+    this._mqttTopicInput = this.shadowRoot.getElementById('mqtt-topic');
+
+    // Load saved settings from localStorage
+    this._loadSettings();
 
     // Event listeners
     this._transportSelect.addEventListener('change', (e) => {
@@ -147,8 +153,15 @@ class gcSetupPanel extends BaseComponent {
       this._applyMQTTConfig();
     });
 
-    // Initialize WebSocket by default
-    this._initWebSocket();
+    // Initialize with saved transport or default to WebSocket
+    const savedTransport = this._currentTransport;
+    this._transportSelect.value = savedTransport;
+    if (savedTransport === 'websocket') {
+      this._initWebSocket();
+    } else if (savedTransport === 'mqtt') {
+      this._mqttConfig.classList.add('visible');
+      this._initMQTT();
+    }
   }
 
   disconnectedCallback() {
@@ -238,8 +251,44 @@ class gcSetupPanel extends BaseComponent {
     });
   }
 
+  _loadSettings() {
+    try {
+      const savedTransport = localStorage.getItem('gc-transport');
+      const savedBroker = localStorage.getItem('gc-mqtt-broker');
+      const savedPort = localStorage.getItem('gc-mqtt-port');
+      const savedTopic = localStorage.getItem('gc-mqtt-topic');
+
+      if (savedTransport) {
+        this._currentTransport = savedTransport;
+      }
+      if (savedBroker) {
+        this._mqttBrokerInput.value = savedBroker;
+      }
+      if (savedPort) {
+        this._mqttPortInput.value = savedPort;
+      }
+      if (savedTopic) {
+        this._mqttTopicInput.value = savedTopic;
+      }
+    } catch (error) {
+      console.warn('Failed to load saved settings:', error);
+    }
+  }
+
+  _saveSettings() {
+    try {
+      localStorage.setItem('gc-transport', this._currentTransport);
+      localStorage.setItem('gc-mqtt-broker', this._mqttBrokerInput.value);
+      localStorage.setItem('gc-mqtt-port', this._mqttPortInput.value);
+      localStorage.setItem('gc-mqtt-topic', this._mqttTopicInput.value);
+    } catch (error) {
+      console.warn('Failed to save settings:', error);
+    }
+  }
+
   _switchTransport(transport) {
     this._currentTransport = transport;
+    this._saveSettings();
 
     if (transport === 'websocket') {
       // Close MQTT if active
@@ -269,6 +318,9 @@ class gcSetupPanel extends BaseComponent {
   }
 
   _applyMQTTConfig() {
+    // Save settings
+    this._saveSettings();
+    
     // Reconnect MQTT with new config
     if (this._mqtt && this._mqtt.isConnected()) {
       this._mqtt.disconnect();
