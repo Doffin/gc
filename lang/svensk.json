@@ -6,6 +6,8 @@
     },
     "livesensor": {
         "title": "Senaste sensormätningar",
+        "name": "Namn",
+        "location": "Position",
         "tid":     "Tid",
         "last":    "Belastning",
         "setning": "Förskjutning",

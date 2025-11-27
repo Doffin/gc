@@ -6,6 +6,8 @@
     },
     "livesensor": {
         "title": "Live Sensor Data",
+        "name": "Name",
+        "location": "Location",
         "tid":     "Time",
         "last":    "Load",    
         "setning": "Displacement",

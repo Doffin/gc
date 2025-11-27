@@ -6,6 +6,8 @@
     },
     "livesensor": {
         "title": "Dane z czujników na żywo",
+        "name": "Nazwa",
+        "location": "Lokalizacja",
         "tid":     "Czas",
         "last":    "Obciążenie",
         "setning": "Przemieszczenie",

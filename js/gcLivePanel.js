@@ -85,6 +85,19 @@ class gcLivePanel extends BaseComponent {
       <div class="content-grid">
         <div class="sensor-grid">
           <div class="sensor">
+            <div class="label" data-i18n="livesensor.name">Navn</div>
+            <div class="reading">
+              <div class="value" id="livesensor.name">--</div>
+            </div>
+          </div>
+          <div class="sensor">
+            <div class="label" data-i18n="livesensor.location">Posisjon</div>
+            <div class="reading">
+              <div class="value" id="livesensor.location">Lat, Lon</div>
+            </div>
+          </div>
+
+          <div class="sensor">
             <div class="label" data-i18n="livesensor.last">Last</div>
             <div class="reading">
               <div class="value" id="last">--</div>
@@ -171,7 +184,7 @@ class gcLivePanel extends BaseComponent {
                 y:{
                   display: true,
                   axis_color: '#fff',
-                  min: -6,
+                  min:-6,
                   max: 0,
                   title: {
                     display: true,   
@@ -276,8 +289,8 @@ class gcLivePanel extends BaseComponent {
       backgroundColor: this._phaseColors[phaseNr].bg,
       tension: 0.3,
       fill: false,
-      pointRadius: 4,
-      borderWidth: 2,
+      pointRadius: 2,
+      borderWidth: 1,
       pointStyle: 'circle',
       showLine: true,
     };

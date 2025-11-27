@@ -6,6 +6,8 @@
     },
     "livesensor": {
         "title": "Siste sensormålinger",
+        "name": "Navn",
+        "location": "Posisjon",
         "tid":     "Tid",
         "last":    "Last",    
         "setning": "Setning",

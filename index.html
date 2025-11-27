@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-US" dir="ltr">
+<html lang="en-EN" dir="ltr">
 
 <head>
     <meta charset="UTF-8" />
@@ -12,24 +12,24 @@
     <title>GroundCheck</title>
     <script src="w3.js"></script>
     <script src="chart.umd.min.js"></script>
-    <!-- Paho MQTT client for MQTT support -->
     <script src="paho-mqtt-min.js"></script>
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script defer src="js/languageLoader.js"></script>
     <script src="js/gcSetupPanel.js" type="module"></script>
     <script src="js/gcLivePanel.js" type="module"></script>
 </head>
 
 <body class="w3-container">
-    <p id="versionNr">Version 1.0.64</p>
-    <select id="language-select">
-        <!-- Language options loaded from lang/config.json -->
-    </select>
-    <button id="install_button" hidden>Install</button>
-    <button onclick="toggleColorMode()">Toggle Dark Mode</button>
-    <input type="button" id="clear-cache" value="Refresh" onclick="clearCache()" />
-    <gc-setup-panel id="setup"></gc-setup-panel>
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding-top: 16px;">
+        <select id="language-select">
+            <!-- Language options loaded from lang/config.json -->
+        </select>
+        <button id="install_button" hidden>Install</button>
+        <button onclick="toggleColorMode()">Toggle Dark Mode</button>
+        <button onclick="toggleSetup()">Setup</button>
+        <input type="button" id="clear-cache" value="Refresh" onclick="clearCache()" />
+        <p id="versionNr">Version 1.0.65</p>
+    </div>
+    <gc-setup-panel id="setup" style="display: none;"></gc-setup-panel>
     <gc-live-panel id="live"></gc-live-panel>
      
     <div class="w3-panel w3-light-grey">
@@ -104,6 +104,15 @@
 
         function sendRequest(msg) {
             setup.sendMessage(msg);
+        }
+
+        function toggleSetup() {
+            const setupPanel = document.getElementById('setup');
+            if (setupPanel.style.display === 'none') {
+                setupPanel.style.display = 'block';
+            } else {
+                setupPanel.style.display = 'none';
+            }
         }
 
     </script>
