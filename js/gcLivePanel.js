@@ -158,7 +158,7 @@ class gcLivePanel extends BaseComponent {
                   display: true,
                   color: '#fff',
                   min: 0,
-                  max: 600,
+                  max: 700,
                   title: {
                     display: true,
                     text: 'Last',

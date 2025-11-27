@@ -22,7 +22,6 @@ baseStyles.replaceSync(`
         color: #eaeaea;
         background-color: #1e1e1e;
         border-radius: 8px;
-        border: 1px solid #444;
     } 
     
     :host([mode="dark"]) .panel {
@@ -36,7 +35,6 @@ baseStyles.replaceSync(`
         color: #111;
         background-color: #fff;
         border-radius: 8px;
-        border: 1px solid #ccc;
     }
 
     :host([mode="light"]) .panel {
