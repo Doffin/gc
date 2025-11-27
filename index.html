@@ -21,7 +21,7 @@
 </head>
 
 <body class="w3-container">
-    <p id="versionNr">Version 1.0.59</p>
+    <p id="versionNr">Version 1.0.60</p>
     <select id="language-select">
         <option value="norsk">Norsk</option>
         <option value="english">English</option>
@@ -156,8 +156,8 @@
                 return;
             }
 
-            const brokerUrl = document.getElementById('mqtt-broker').value || 'test.mosquitto.org';
-            const brokerPort = parseInt(document.getElementById('mqtt-port').value) || 8081;
+            const brokerUrl = document.getElementById('mqtt-broker').value || 'broker.hivemq.com';
+            const brokerPort = parseInt(document.getElementById('mqtt-port').value) || 8884;
             const topic = document.getElementById('mqtt-topic').value || 'gc/data';
             const clientId = `gc_${Math.random().toString(16).substr(2, 9)}`;
 
