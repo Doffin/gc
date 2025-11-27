@@ -12,22 +12,118 @@
     <title>GroundCheck</title>
     <script src="w3.js"></script>
     <script src="chart.umd.min.js"></script>
-    <script src="paho-mqtt-min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script defer src="js/languageLoader.js"></script>
     <script src="js/gcSetupPanel.js" type="module"></script>
     <script src="js/gcLivePanel.js" type="module"></script>
+    <style>
+        .menu-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0 10px 0;
+        }
+        .hamburger-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+        .hamburger-btn:hover {
+            background-color: rgba(128, 128, 128, 0.2);
+        }
+        .hamburger-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .hamburger-icon span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: currentColor;
+            border-radius: 2px;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            min-width: 200px;
+            z-index: 1000;
+        }
+        .dropdown-menu.show {
+            display: flex;
+        }
+        body[data-mode="dark"] .dropdown-menu {
+            background-color: #2a2a2a;
+            border-color: #555;
+        }
+        .menu-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            text-align: left;
+            font-size: 14px;
+            color: inherit;
+            transition: background-color 0.2s;
+        }
+        .menu-item:hover {
+            background-color: rgba(128, 128, 128, 0.2);
+        }
+        .menu-item:first-child {
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+        .menu-item:last-child {
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+        .menu-separator {
+            height: 1px;
+            background-color: #ccc;
+            margin: 4px 0;
+        }
+        body[data-mode="dark"] .menu-separator {
+            background-color: #555;
+        }
+    </style>
 </head>
 
-<body class="w3-container">
-    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding-top: 16px;">
+<body class="w3-container" data-mode="dark">
+    <div class="menu-container">
+        <button class="hamburger-btn" onclick="toggleMenu()" aria-label="Menu">
+            <div class="hamburger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </button>
         <select id="language-select">
             <!-- Language options loaded from lang/config.json -->
         </select>
+        <p id="versionNr" style="margin: 0; margin-left: auto;">Version 1.0.66</p>
         <button id="install_button" hidden>Install</button>
-        <button onclick="toggleColorMode()">Toggle Dark Mode</button>
-        <button onclick="toggleSetup()">Setup</button>
-        <input type="button" id="clear-cache" value="Refresh" onclick="clearCache()" />
-        <p id="versionNr">Version 1.0.66</p>
+        
+        <div id="dropdown-menu" class="dropdown-menu">
+            <button class="menu-item" onclick="toggleSetup(); closeMenu();">Setup</button>
+            <button class="menu-item" onclick="toggleColorMode(); closeMenu();">Toggle Dark Mode</button>
+            <div class="menu-separator"></div>
+            <button class="menu-item" onclick="clearCache();">Refresh</button>
+        </div>
     </div>
     <gc-setup-panel id="setup" style="display: none;"></gc-setup-panel>
     <gc-live-panel id="live"></gc-live-panel>
@@ -79,6 +175,7 @@
         function applyColorMode(newMode) 
         {
             mode = newMode;
+            document.body.setAttribute('data-mode', mode);
             document.body.style.backgroundColor = mode === 'dark' ? '#121212' : '#ffffff';
             document.body.style.color = mode === 'dark' ? '#e0e0e0' : '#000000';
             live.setColorMode(mode);
@@ -114,6 +211,25 @@
                 setupPanel.style.display = 'none';
             }
         }
+
+        function toggleMenu() {
+            const menu = document.getElementById('dropdown-menu');
+            menu.classList.toggle('show');
+        }
+
+        function closeMenu() {
+            const menu = document.getElementById('dropdown-menu');
+            menu.classList.remove('show');
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('dropdown-menu');
+            const hamburger = document.querySelector('.hamburger-btn');
+            if (menu && !menu.contains(e.target) && !hamburger.contains(e.target)) {
+                closeMenu();
+            }
+        });
 
     </script>
 
