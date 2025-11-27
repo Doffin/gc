@@ -1,6 +1,6 @@
 {
-    "lang": "en-us",
-    "name": "GoundCheck App",
+    "lang": "en-en",
+    "name": "Machine Control - GroundCheck",
     "short_name": "GroundCheck",
     "description": "En demonstrasjon av Benkelmannsarm",
     "start_url": "index.html",
