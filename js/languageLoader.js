@@ -1,7 +1,7 @@
 const langSelect = document.getElementById("language-select");
 
 let currentLanguageData = {};
-let currentLang = 'norsk';
+let currentLang = 'english';
 let langConfig = null;
 
 // Interpolerer {variable} i teksten
@@ -63,7 +63,7 @@ async function populateLanguageSelect() {
         });
         
         // Sett default språk
-        const defaultLang = langConfig.defaultLanguage || 'norsk';
+        const defaultLang = langConfig.defaultLanguage || 'english';
         langSelect.value = defaultLang;
         await loadLanguage(defaultLang);
         
