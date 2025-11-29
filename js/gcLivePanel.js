@@ -297,6 +297,14 @@ class gcLivePanel extends BaseComponent {
     this._chart.data.datasets.push(newDataset);
   }
 
+  removeData(chart) {
+    chart.data.labels.pop();
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data.pop();
+    });
+    chart.update();
+  }
+
   update(data) {
     // Always update DOM values
     for (const [key, value] of Object.entries(data)) {
@@ -315,8 +323,9 @@ class gcLivePanel extends BaseComponent {
     // Handle resets
     if (data.type === 'gc_reset') {
       if (this._chart) {
-        this._chart.data.labels = [];
-        this._chart.data.datasets = [];
+        this.removeData(this._chart);
+        //this._chart.data.labels = [];
+        //this._chart.data.datasets = [];
         this.initializeDataset("Belastning1", "phase1");
         this.initializeDataset("Oppslepp", "phase2");
         this.initializeDataset("Belastning2", "phase3");

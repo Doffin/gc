@@ -28,7 +28,6 @@ function updateText() {
     // Oppdaterer også web component
     let live = document.getElementById("live");
     if(live!=null) live.updateLanguage(currentLanguageData);
-    w3.includeHTML();
     // Broadcast a global event so components can listen for language changes
     try {
         window.dispatchEvent(new CustomEvent('gc-language-changed', { detail: { languageData: currentLanguageData, lang: currentLang } }));
