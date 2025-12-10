@@ -184,7 +184,7 @@ class gcLivePanel extends BaseComponent {
                 y:{
                   display: true,
                   axis_color: '#fff',
-                  min:-6,
+                  min:-2,
                   max: 0,
                   title: {
                     display: true,   
