@@ -120,7 +120,7 @@ class gcSetupPanel extends BaseComponent {
         </div>
         <div class="config-row">
           <label for="mqtt-topic" data-i18n="setup.topic">Topic:</label>
-          <input type="text" id="mqtt-topic" value="gc/data" style="width: 200px;" />
+          <input type="text" id="mqtt-topic" value="QKXwQKt88x/gc/du/snr001" style="width: 250px;" />
         </div>
         <button id="apply-mqtt" data-i18n="setup.applyButton">Apply & Reconnect</button>
       </div>
@@ -184,6 +184,11 @@ class gcSetupPanel extends BaseComponent {
     this._connectionStatus.textContent = `${text} (${transport})`;
   }
 
+  _getPrefix() {
+    const prefix = "QKXwQKt88x/gc/du/";
+    return prefix;
+  }
+
   _initWebSocket() {
     if (this._ws) {
       this._emitMessage('WebSocket is already initialized.');
@@ -216,7 +221,9 @@ class gcSetupPanel extends BaseComponent {
 
     const brokerUrl = this.shadowRoot.getElementById('mqtt-broker').value || 'broker.hivemq.com';
     const brokerPort = parseInt(this.shadowRoot.getElementById('mqtt-port').value) || 8884;
-    const topic = this.shadowRoot.getElementById('mqtt-topic').value || 'gc/data';
+    const prefix = "QKXwQKt88x/gc/du/";
+    const serialNr = "snr001";
+    const topic = prefix + (this.shadowRoot.getElementById('mqtt-topic').value || serialNr);
     const clientId = `gc_${Math.random().toString(16).substr(2, 9)}`;
 
     // Check if Paho is available
@@ -333,7 +340,30 @@ class gcSetupPanel extends BaseComponent {
 
   _handleMessage(msgData) {
     try {
-      const msg = typeof msgData === 'string' ? JSON.parse(msgData) : msgData;
+      let msg;      
+      // Check if it's NMEA format ($MCGCDU,...)
+      if (typeof msgData === 'string' && msgData.startsWith('$MCGCDU,')) {
+        // Parse NMEA-like format: $MCGCDU,snr001,10,1,L,14:50:33,0.34,-0.00,-5.05
+        const parts = msgData.split(','); 
+        if (parts.length >= 9) {
+          msg = {
+            serialNr: parts[1],
+            messageId: parts[2],
+            phase: parts[3],
+            type: parts[4],
+            tid: parts[5],
+            last: parseFloat(parts[6]).toFixed(1),
+            setning: parts[7],
+            throttle: parts[8]
+          };
+        } else {
+          throw new Error('Invalid NMEA format');
+        }
+      } else {
+        // Try to parse as JSON (backward compatibility)
+        msg = typeof msgData === 'string' ? JSON.parse(msgData) : msgData;
+      }
+      
       // Emit custom event for other components to handle
       this.emit('gc-message', { message: msg });
     } catch (error) {
@@ -350,7 +380,7 @@ class gcSetupPanel extends BaseComponent {
     if (this._currentTransport === 'websocket' && this._ws && this._ws.readyState === WebSocket.OPEN) {
       this._ws.send(msg);
     } else if (this._currentTransport === 'mqtt' && this._mqtt && this._mqtt.isConnected()) {
-      const topic = this.shadowRoot.getElementById('mqtt-topic').value || 'gc/data';
+      const topic = this.shadowRoot.getElementById('mqtt-topic').value || this._getPrefix()+serialNr;
       const message = new Paho.MQTT.Message(msg);
       message.destinationName = topic;
       this._mqtt.send(message);

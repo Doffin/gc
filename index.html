@@ -198,10 +198,10 @@
 
         function onMessage(msg) {
             try {
-                if(msg.type && msg.type.startsWith("gc_")) {
+//                if(msg.type && msg.type.startsWith("gc-")) {
                     live.update(msg);
                     showMessage(`Received: ${msg.type} - phase: ${msg.phase}, last: ${msg.last}, setning: ${msg.setning}`);
-                }
+  //              }
             } catch (error) {
                 showMessage(`Error parsing message: ${error.message}`);
             }

@@ -313,15 +313,15 @@ class gcLivePanel extends BaseComponent {
         prop.textContent = `${value}`;
 
       // capture pending values for charting
-      if (key === 'last') this._pendingLast = `${value}`;
+      if (key === 'last') 
+        this._pendingLast = parseFloat(`${value}`).toFixed(1);
       if (key === 'setning') {
-        const num = Number(value);
-        this._pendingSetning = Number.isFinite(num) ? num : null;
+        this._pendingSetning = parseFloat(`${value}`).toFixed(2)*-1.0;
       }
     }
 
     // Handle resets
-    if (data.type === 'gc_reset') {
+    if (data.type === 'R') { // Reset message
       if (this._chart) {
         this.removeData(this._chart);
         //this._chart.data.labels = [];
@@ -340,8 +340,8 @@ class gcLivePanel extends BaseComponent {
       this._currentPhase = data.phase;
     }
 
-    // Only push to chart if type === "gc_save"
-    const shouldChart = data.type === 'gc_save';
+    // Only push to chart if type === "S"
+    const shouldChart = true; //data.type === 'S';
     
     if (shouldChart && this._chart && this._pendingLast != null && this._pendingSetning != null && this._currentPhase) {
       try {
