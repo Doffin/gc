@@ -343,14 +343,18 @@ class gcSetupPanel extends BaseComponent {
       let msg;      
       // Check if it's NMEA format ($MCGCDU,...)
       if (typeof msgData === 'string' && msgData.startsWith('$MCGCDU,')) {
-        // Parse NMEA-like format: $MCGCDU,snr001,10,1,L,14:50:33,0.34,-0.00,-5.05
+        // Parse NMEA-like format: $MCGCDU,snr001,1270,BELASTNING1,L,23:14:16,50.05,0.20,0.00
         const parts = msgData.split(','); 
         if (parts.length >= 9) {
+          // Map type: L -> gc_live, S -> gc_save
+          const messageType = parts[4] === 'L' ? 'gc_live' : parts[4] === 'S' ? 'gc_save' : 'gc_live';
+          
           msg = {
+            type: messageType,
             serialNr: parts[1],
             messageId: parts[2],
+            phaseLabel: parts[3],
             phase: parts[3],
-            type: parts[4],
             tid: parts[5],
             last: parseFloat(parts[6]).toFixed(1),
             setning: parts[7],

@@ -321,48 +321,50 @@ class gcLivePanel extends BaseComponent {
     }
 
     // Handle resets
-    if (data.type === 'R') { // Reset message
+    if (data.type === 'gc_reset' || data.type === 'R') { // Reset message
       if (this._chart) {
         this.removeData(this._chart);
         this._chart.data.labels = [];
         this._chart.data.datasets = [];
-        this.initializeDataset("Belastning1", "phase1");
-        this.initializeDataset("Oppslepp", "phase2");
-        this.initializeDataset("Belastning2", "phase3");
+        // Datasets will be created dynamically when data arrives
+        this._knownPhases = new Set();
+        this.initializeDataset("Belastning2", "BELASTNING2");
         this._chart.update();
       }
       this._currentPhase = null;
       return;
     }
 
-    // Track current phase
+    // Track current phase and label
     if (data.phase) {
       this._currentPhase = data.phase;
     }
+    if (data.phaseLabel) {
+      this._currentPhaseLabel = data.phaseLabel;
+    }
 
-    // Only push to chart if type === "S"
-    const shouldChart = true; //data.type === 'S';
+    // Only push to chart if type === "gc_save"
+    const shouldChart = data.type === 'S';
     
     if (shouldChart && this._chart && this._pendingLast != null && this._pendingSetning != null && this._currentPhase) {
       try {
         const chart = this._chart;
         const phase = this._currentPhase;
+        const phaseLabel = this._currentPhaseLabel || phase;
 
         let newObservation = { x: Number(this._pendingLast), y: this._pendingSetning };
 
-        // Determine target dataset index: allow numeric phase (0/1/2) or phase key string ('phase1')
-        let targetIndex = -1;
-        if (/^\d+$/.test(String(phase))) {
-          targetIndex = Number(phase);
-        } else {
-          targetIndex = chart.data.datasets.findIndex(ds => ds.phaseKey === phase || ds.label === phase);
+        // Find or create dataset for this phase
+        let targetIndex = chart.data.datasets.findIndex(ds => ds.phaseKey === phase);
+        
+        if (targetIndex === -1) {
+          // Create new dataset for this phase
+          this.initializeDataset(phaseLabel, phase);
+          targetIndex = chart.data.datasets.length - 1;
+          console.log('Created new dataset for phase:', phase, 'with label:', phaseLabel);
         }
 
-        if (targetIndex === -1 || !chart.data.datasets[targetIndex]) {
-          console.warn('Unknown phase for charting:', phase);
-        } else {
-          chart.data.datasets[targetIndex].data.push(newObservation);
-        }
+        chart.data.datasets[targetIndex].data.push(newObservation);
         chart.update('none');
       } catch (e) {
         console.warn('Failed to push point to chart:', e);
