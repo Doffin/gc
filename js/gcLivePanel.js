@@ -291,7 +291,7 @@ class gcLivePanel extends BaseComponent {
       fill: false,
       pointRadius: 1,
       borderWidth: 1,
-      pointStyle: 'line',
+      pointStyle: false,
       showLine: true,
     };
     this._chart.data.datasets.push(newDataset);
