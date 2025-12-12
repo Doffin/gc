@@ -289,9 +289,9 @@ class gcLivePanel extends BaseComponent {
       backgroundColor: this._phaseColors[phaseNr].bg,
       tension: 0.3,
       fill: false,
-      pointRadius: 2,
+      pointRadius: 1,
       borderWidth: 1,
-      pointStyle: 'circle',
+      pointStyle: 'line',
       showLine: true,
     };
     this._chart.data.datasets.push(newDataset);
@@ -324,8 +324,8 @@ class gcLivePanel extends BaseComponent {
     if (data.type === 'R') { // Reset message
       if (this._chart) {
         this.removeData(this._chart);
-        //this._chart.data.labels = [];
-        //this._chart.data.datasets = [];
+        this._chart.data.labels = [];
+        this._chart.data.datasets = [];
         this.initializeDataset("Belastning1", "phase1");
         this.initializeDataset("Oppslepp", "phase2");
         this.initializeDataset("Belastning2", "phase3");
